@@ -20,11 +20,13 @@ const Navbar = () => {
   return (
     <nav className='flex flex-col  md:flex-row items-center md:justify-between sticky bottom-0  py-8 text-md md:text-lg sm:space-x-3 px-16 md:px-32'>
       <ul className='flex space-x-3 md:space-x-5'>
+        <NavLink href='/'>Home</NavLink>
         <NavLink href='/about'>About</NavLink>
         <NavLink href='/media'>Media</NavLink>
         <NavLink href='/events'>Events</NavLink>
         <NavLink href='/merchandise'>Merchandise</NavLink>
         <NavLink href='/contact'>Contact</NavLink>
+        <NavLink href='/press'>Press</NavLink>
         <NavLink href='/blogs'>Blogs</NavLink>
       </ul>
       <ul className='flex space-x-5'>
