@@ -7,7 +7,7 @@ import Nblock from '../components/Nblock';
 const AboutCover = () => {
   return (
     <Nblock>
-      <header className='bg-[url(/images/about-cover.png)] bg-cover bg-center h-screen'>
+      <header className='bg-[url(/images/about-cover.jpeg)] bg-cover bg-center h-screen'>
         <Block className='h-full flex flex-col justify-center'>
           <HeadingGradient>
             Nick <br /> Demopoulos

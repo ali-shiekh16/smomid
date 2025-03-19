@@ -6,17 +6,19 @@ import Tickets from './Tickets';
 import UpcomingConcerts from './UpcomingConcerts';
 import RecentConcerts from './RecentConcerts';
 import ConcertWall from './ConcertWall';
+import EventFlyer from './EventFlyer';
 
 const Page = () => {
   return (
     <>
       <EventCover />
-      <Stats />
-      <ExperienceSmomid />
+      {/* <Stats /> */}
+      {/* <ExperienceSmomid /> */}
       <Tickets />
-      <UpcomingConcerts />
-      <RecentConcerts />
-      <ConcertWall />
+      <EventFlyer />
+      {/* <UpcomingConcerts /> */}
+      {/* <RecentConcerts /> */}
+      {/* <ConcertWall /> */}
     </>
   );
 };

@@ -1,10 +1,12 @@
-import { Instagram } from 'lucide-react';
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
-import Block from './Block';
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
+  const router = useRouter();
+
   return <Link href={href}>{children}</Link>;
 };
 
@@ -28,6 +30,8 @@ const Navbar = () => {
         <NavLink href='/contact'>Contact</NavLink>
         <NavLink href='/press'>Press</NavLink>
         <NavLink href='/blogs'>Blogs</NavLink>
+        <Link href='/test'>Test</Link>
+        <Link href='/attendance'>Attendance</Link>
       </ul>
       <ul className='flex space-x-5'>
         <NavIcon href='#' icon='instagram' />

@@ -8,8 +8,8 @@ const Page = () => {
   return (
     <>
       <BlogHero />
-      <FeaturedBlogs />
-      <BlogsGrid />
+      {/* <FeaturedBlogs /> */}
+      {/* <BlogsGrid /> */}
       <BlogFooter />
     </>
   );

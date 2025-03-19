@@ -7,8 +7,8 @@ const Press = () => {
   return (
     <>
       <InterviewsAndPodcasts />
-      <Articles />
-      <FeaturesAndRecognitions />
+      {/* <Articles /> */}
+      {/* <FeaturesAndRecognitions /> */}
     </>
   );
 };

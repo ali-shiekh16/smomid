@@ -10,23 +10,19 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const ProductCard = ({ image, title, price, className, ...props }: Props) => {
   return (
-    <div
-      className={clsx('uppercase text-2xl w-full h-full', className)}
-      {...props}
-    >
-      <div className='border-2 border-white p-5 w-full h-full'>
-        <p>s, m, l, xl, xxl</p>
+    <div className={clsx('uppercase text-2xl max-w-80', className)} {...props}>
+      <div className='border-2 border-white w-full'>
         <Image
-          className='object-contain w-full h-full'
+          className='object-contain w-full h-full '
           src={image}
           alt='Shirts'
           width={500}
           height={500}
         />
       </div>
-      <div className='flex justify-between mt-2'>
+      <div className='flex text-lg justify-between space-x-5 mt-2 '>
         <p>{title}</p>
-        <p>{price}</p>
+        <p className='text-right'>{price}</p>
       </div>
     </div>
   );

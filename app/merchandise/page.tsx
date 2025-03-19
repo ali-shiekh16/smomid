@@ -11,8 +11,8 @@ const Page = () => {
       <MerchandiseCover />
       <Albums />
       <ShirtsGrid />
-      <Reviews />
-      <Merchverse />
+      {/* <Reviews /> */}
+      {/* <Merchverse /> */}
     </>
   );
 };

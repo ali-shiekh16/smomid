@@ -6,41 +6,41 @@ import Image from 'next/image';
 
 const tickets = [
   {
-    month: 'March',
-    date: 'IO',
-    state: 'Los Angeles',
-    city: 'California',
+    month: '',
+    date: 'TBO',
+    state: 'Tradesman Bar',
+    city: '222 Bushwick Ave, Brooklyn, NY 11206',
   },
   {
-    month: 'March',
-    date: 'IO',
-    state: 'Las Vegas',
-    city: 'Nevada',
+    month: '',
+    date: 'TBO',
+    state: 'Ivy House',
+    city: '322 Troutman Street Brooklyn, NY Vegas',
   },
-  {
-    month: 'March',
-    date: 'IO',
-    state: 'Houston ',
-    city: 'Texas',
-  },
-  {
-    month: 'March',
-    date: 'IO',
-    state: 'Miami',
-    city: 'Florida',
-  },
-  {
-    month: 'March',
-    date: 'IO',
-    state: 'Chicago',
-    city: 'California',
-  },
-  {
-    month: 'March',
-    date: 'IO',
-    state: 'New York City',
-    city: 'New York',
-  },
+  // {
+  //   month: 'March',
+  //   date: 'IO',
+  //   state: 'Houston ',
+  //   city: 'Texas',
+  // },
+  // {
+  //   month: 'March',
+  //   date: 'IO',
+  //   state: 'Miami',
+  //   city: 'Florida',
+  // },
+  // {
+  //   month: 'March',
+  //   date: 'IO',
+  //   state: 'Chicago',
+  //   city: 'California',
+  // },
+  // {
+  //   month: 'March',
+  //   date: 'IO',
+  //   state: 'New York City',
+  //   city: 'New York',
+  // },
 ];
 
 const Tickets = () => {
@@ -61,7 +61,7 @@ const Tickets = () => {
 
             <div>
               <ButtonOutline className='hover:bg-white text-black'>
-                Buy now
+                LINK
               </ButtonOutline>
             </div>
           </div>

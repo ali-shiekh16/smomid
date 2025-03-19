@@ -22,7 +22,7 @@ const PodcastCard = ({
 }: Props) => {
   return (
     <div className='border-1 border-white relative'>
-      <h2 className='font-neo-latina text-3xl border-b-1 border-white smd:text-right px-20 py-5'>
+      <h2 className='font-semibold font-neo-latina text-3xl border-b-1 border-white smd:text-right px-20 py-5'>
         {title}
       </h2>
       <div className='smd:flex smd:items-center smd:space-x-5 px-15 py-10 '>
@@ -35,20 +35,28 @@ const PodcastCard = ({
           objectFit='contain'
         />
         <div className='smd:h-80 smd:min-w-[400px]'></div>
-        <div>
-          <h3 className='font-neo-latina text-2xl mb-5'>{subtitle}</h3>
-          <p>{text}</p>
+        <div className='flex flex-col items-end'>
+          <h3 className='font-neo-latina  text-2xl mb-5 text-right'>
+            {subtitle}
+          </h3>
+          {/* <p>{text}</p> */}
+          <ButtonOutline className='bg-white '>
+            <span className='text-black'>
+              {btnText} <ArrowUpRight className='inline-block' />
+            </span>
+          </ButtonOutline>
+          <p className='mt-10'>Posted on Youtube on: {date}</p>
         </div>
       </div>
 
-      <div className='flex justify-between items-center px-10 py-2 border-t-1 border-white'>
+      {/* <div className='flex justify-between items-center px-10 py-2 border-t-1 border-white'>
         <p>Posted on Youtube on: {date}</p>
         <ButtonOutline className='bg-white '>
           <span className='text-black'>
             {btnText} <ArrowUpRight className='inline-block' />
           </span>
         </ButtonOutline>
-      </div>
+      </div> */}
     </div>
   );
 };
