@@ -1,13 +1,22 @@
 'use client';
+import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
-  const router = useRouter();
-
-  return <Link href={href}>{children}</Link>;
+  const pathname = usePathname();
+  return (
+    <Link
+      href={href}
+      className={clsx('text-lg', {
+        'font-bold text-3xl underline underline-offset-4': pathname === href,
+      })}
+    >
+      {children}
+    </Link>
+  );
 };
 
 const NavIcon = ({ href, icon }: { href: string; icon: string }) => {
@@ -30,8 +39,6 @@ const Navbar = () => {
         <NavLink href='/contact'>Contact</NavLink>
         <NavLink href='/press'>Press</NavLink>
         <NavLink href='/blogs'>Blogs</NavLink>
-        <Link href='/test'>Test</Link>
-        <Link href='/attendance'>Attendance</Link>
       </ul>
       <ul className='flex space-x-5'>
         <NavIcon href='#' icon='instagram' />
