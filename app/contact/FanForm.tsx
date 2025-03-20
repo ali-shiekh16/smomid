@@ -13,7 +13,7 @@ const FanForm = () => {
 
   return (
     <Section>
-      <ContactSecHeading align='right'>Fan Messages</ContactSecHeading>
+      <ContactSecHeading align='right'>Add to email list</ContactSecHeading>
       <form onSubmit={handleSubmit} className='md:flex md:space-x-10 w-full'>
         <div className='space-y-10 flex-3'>
           <TextField label='Name :' htmlFor='name' />

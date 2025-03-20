@@ -17,7 +17,7 @@ const HeadingPill = ({
 
   if (align === 'center') {
     flexLeft = '1';
-    flexRight = '1';
+    flexRight = '8';
   }
 
   if (align === 'right') {

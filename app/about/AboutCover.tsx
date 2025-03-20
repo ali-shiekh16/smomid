@@ -13,9 +13,9 @@ const AboutCover = () => {
             Nick <br /> Demopoulos
           </HeadingGradient>
           <div className='flex space-x-5'>
-            <ButtonOutline> Singer </ButtonOutline>
-            <ButtonOutline> Composer</ButtonOutline>
-            <ButtonOutline> Producer</ButtonOutline>
+            <ButtonOutline>
+              <span className='text-4xl'>Musician</span>
+            </ButtonOutline>
           </div>
         </Block>
       </header>

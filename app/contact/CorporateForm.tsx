@@ -15,7 +15,7 @@ const CorporateForm = () => {
 
   return (
     <Section>
-      <ContactSecHeading>Corporate Inquiries</ContactSecHeading>
+      <ContactSecHeading>Inquiries</ContactSecHeading>
       <form onSubmit={handleSubmit} className='md:flex md:space-x-10 w-full'>
         <div className='space-y-10 flex-3'>
           <TextField label='Name :' htmlFor='name' />
