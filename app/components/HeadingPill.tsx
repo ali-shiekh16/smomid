@@ -12,23 +12,24 @@ const HeadingPill = ({
   align = 'left',
   ...props
 }: Props) => {
+  const offset = '8';
   let flexLeft = '1';
-  let flexRight = '8';
+  let flexRight = offset;
 
   if (align === 'center') {
     flexLeft = '1';
-    flexRight = '8';
+    flexRight = offset;
   }
 
   if (align === 'right') {
-    flexLeft = '8';
+    flexLeft = offset;
     flexRight = '1';
   }
 
   return (
     <Nblock>
       <div className='mb-8 flex items-center w-full '>
-        <div className={`flex-8 h-[1px] bg-white `}></div>
+        <div className={`flex-${flexRight} h-[1px] bg-white `}></div>
 
         <h2
           className={clsx(
@@ -40,7 +41,7 @@ const HeadingPill = ({
           {children}
         </h2>
 
-        <div className={`flex-1 h-[1px] bg-white `}></div>
+        <div className={`flex-${flexLeft} h-[1px] bg-white `}></div>
       </div>
     </Nblock>
   );
