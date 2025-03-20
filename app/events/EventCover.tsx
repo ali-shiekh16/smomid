@@ -1,8 +1,6 @@
 import React from 'react';
 import Block from '../components/Block';
-import ButtonOutline from '../components/ButtonOutline';
 import Nblock from '../components/Nblock';
-import { ArrowUpRight } from 'lucide-react';
 
 const EventCover = () => {
   return (
