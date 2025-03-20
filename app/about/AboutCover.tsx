@@ -9,9 +9,10 @@ const AboutCover = () => {
     <Nblock>
       <header className='bg-[url(/images/about-cover.jpeg)] bg-cover bg-center h-screen'>
         <Block className='h-full flex flex-col justify-center'>
-          <HeadingGradient>
-            Nick <br /> Demopoulos
-          </HeadingGradient>
+          <h1 className='text-9xl font-bold font-neo-latina'>
+            SMOMID
+            <br />- Nick Demoopoulos
+          </h1>
           <div className='flex space-x-5'>
             <ButtonOutline>
               <span className='text-4xl'>Musician</span>
