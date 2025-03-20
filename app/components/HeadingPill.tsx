@@ -28,11 +28,11 @@ const HeadingPill = ({
   return (
     <Nblock>
       <div className='mb-8 flex items-center w-full '>
-        <div className={`flex-${flexLeft} h-[1px] bg-white `}></div>
+        <div className={`flex-8 h-[1px] bg-white `}></div>
 
         <h2
           className={clsx(
-            'px-8 py-2 text-2xl  md:px-12 md:py-3 md:text-4xl font-neo-latina border-1 rounded-full',
+            'px-8 py-2 text-2xl md:px-12 md:py-3 md:text-4xl font-neo-latina border-1 rounded-full',
             className
           )}
           {...props}
@@ -40,7 +40,7 @@ const HeadingPill = ({
           {children}
         </h2>
 
-        <div className={`flex-${flexRight} h-[1px] bg-white `}></div>
+        <div className={`flex-1 h-[1px] bg-white `}></div>
       </div>
     </Nblock>
   );
