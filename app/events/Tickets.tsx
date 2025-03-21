@@ -3,44 +3,23 @@ import Section from '../components/Section';
 import EventDate from './EventDate';
 import ButtonOutline from '../components/ButtonOutline';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const tickets = [
   {
-    month: '',
-    date: 'TBO',
+    month: 'March',
+    date: '3rd',
     state: 'Tradesman Bar',
     city: '222 Bushwick Ave, Brooklyn, NY 11206',
+    link: 'http://tradesmanbar.com/',
   },
   {
-    month: '',
-    date: 'TBO',
+    month: 'March',
+    date: '23rd',
     state: 'Ivy House',
     city: '322 Troutman Street Brooklyn, NY Vegas',
+    link: 'http://www.ivyhousestudio.com/',
   },
-  // {
-  //   month: 'March',
-  //   date: 'IO',
-  //   state: 'Houston ',
-  //   city: 'Texas',
-  // },
-  // {
-  //   month: 'March',
-  //   date: 'IO',
-  //   state: 'Miami',
-  //   city: 'Florida',
-  // },
-  // {
-  //   month: 'March',
-  //   date: 'IO',
-  //   state: 'Chicago',
-  //   city: 'California',
-  // },
-  // {
-  //   month: 'March',
-  //   date: 'IO',
-  //   state: 'New York City',
-  //   city: 'New York',
-  // },
 ];
 
 const Tickets = () => {
@@ -60,9 +39,11 @@ const Tickets = () => {
             />
 
             <div className='mb-10 md:mb-0'>
-              <ButtonOutline className='hover:bg-white text-black'>
-                LINK
-              </ButtonOutline>
+              <Link href={ticket.link} target='_blank'>
+                <ButtonOutline className='hover:bg-white hover:text-black'>
+                  LINK
+                </ButtonOutline>
+              </Link>
             </div>
           </div>
         ))}
