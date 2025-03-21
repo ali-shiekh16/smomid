@@ -14,11 +14,10 @@ const ContactCover = () => {
               Get in touch
             </h1>
             <ButtonOutline className=' w-fit rounded-full px-6 py-3 text-5xl'>
-              <span className='text-2xl md:text-3xl'> Contact now</span>
+              <span className='text-2xl md:text-3xl'> Contact</span>
             </ButtonOutline>
             <p className='text-xl '>
-              For bookings, media inquiries, and messages, reach out below
-              below.
+              For bookings, media inquiries, and messages, reach out below.
             </p>
             <Image
               src='/icons/arrow-down.svg'

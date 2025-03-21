@@ -8,9 +8,9 @@ const AboutCover = () => {
   return (
     <Nblock>
       <header className='relative h-screen'>
-        <div className='absolute inset-0 bg-gradient-to-b from-black/30 to-black/30 z-10'></div>
+        <div className='absolute inset-0 bg-gradient-to-b from-black/30 to-black/30 z-0'></div>
         <div className='absolute inset-0 bg-[url(/images/about-cover.png)] bg-cover bg-center'></div>
-        <Block className='relative z-20 h-full flex flex-col space-y-3 justify-center'>
+        <Block className='relative z-10 h-full flex flex-col space-y-3 justify-center'>
           <h1 className='text-5xl text-center md:text-left md:text-9xl font-bold font-neo-latina'>
             SMOMID
             <br />- Nick Demoopoulos

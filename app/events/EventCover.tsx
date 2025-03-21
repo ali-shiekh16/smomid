@@ -6,8 +6,6 @@ const EventCover = () => {
   return (
     <Nblock>
       <header className='bg-[url(/images/events-cover.jpg)] bg-cover bg-center h-screen text-center'>
-        <div className='absolute inset-0 bg-gradient-to-b from-black/30 to-black/30 z-10'></div>
-        <div className='absolute inset-0 bg-[url(/images/events-cover.jpg)] bg-cover bg-center'></div>
         <Block className='relative z-20 h-full flex flex-col justify-center '>
           {/* <div className='flex flex-col items-center space-y-10'>
             <div className='flex justify-end  w-full'>
