@@ -1,8 +1,12 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Nblock from '../components/Nblock';
 import Section from '../components/Section';
 import HeadingUnderlined from '../components/HeadingUnderlined';
 import Image from 'next/image';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
 
 const images = [
   '/images/media/1.jpg',
@@ -42,19 +46,38 @@ const images = [
   '/images/media/35.jpg',
   '/images/media/36.jpeg',
   '/images/media/37.jpg',
-];
+].map(image => ({ src: image }));
 
 const Masonary = () => {
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+
+  const handleClick = (index: number) => {
+    setOpen(true);
+    setIndex(index);
+  };
+
+  const handleShowMore = () => {
+    setShowMore(true);
+  };
+
+  const pictures = showMore ? images : images.slice(0, 10);
+
   return (
     <Section>
       <HeadingUnderlined className='text-right'>Photos</HeadingUnderlined>
       <Nblock>
         <div className='columns-1 sm:columns-2 lg:columns-4 py-10 md:py-20'>
-          {images.map((image, index) => (
-            <div className='mb-4 break-inside-avoid ' key={index}>
+          {pictures.map((image, index) => (
+            <div
+              className='mb-4 break-inside-avoid cursor-pointer'
+              key={index}
+              onClick={() => handleClick(index)}
+            >
               <Image
                 className='w-full object-cover rounded-lg mx-auto'
-                src={image}
+                src={image.src}
                 alt='photo'
                 width='500'
                 height='500'
@@ -62,6 +85,24 @@ const Masonary = () => {
             </div>
           ))}
         </div>
+
+        {!showMore && (
+          <div className='flex justify-center'>
+            <button
+              onClick={handleShowMore}
+              className='px-8 py-4 text-2xl font-neo-latina border-1 rounded-full'
+            >
+              Show More
+            </button>
+          </div>
+        )}
+
+        <Lightbox
+          open={open}
+          index={index}
+          close={() => setOpen(false)}
+          slides={images}
+        />
       </Nblock>
     </Section>
   );
