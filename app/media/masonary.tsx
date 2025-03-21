@@ -75,12 +75,10 @@ const Masonary = () => {
               key={index}
               onClick={() => handleClick(index)}
             >
-              <Image
+              <img
                 className='w-full object-cover rounded-lg mx-auto'
                 src={image.src}
                 alt='photo'
-                width='500'
-                height='500'
               />
             </div>
           ))}
