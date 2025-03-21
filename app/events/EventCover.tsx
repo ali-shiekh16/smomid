@@ -5,7 +5,7 @@ import Nblock from '../components/Nblock';
 const EventCover = () => {
   return (
     <Nblock>
-      <header className='bg-[url(/images/events-cover.jpg)] bg-cover bg-center h-screen text-center'>
+      <header className='bg-[url(/images/events-cover.webp)] bg-cover bg-center h-screen text-center'>
         <Block className='relative z-20 h-full flex flex-col justify-center '>
           {/* <div className='flex flex-col items-center space-y-10'>
             <div className='flex justify-end  w-full'>

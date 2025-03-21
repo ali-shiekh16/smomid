@@ -7,7 +7,7 @@ import Image from 'next/image';
 const ContactCover = () => {
   return (
     <Nblock>
-      <header className='bg-[url(/images/contact-cover.jpeg)] bg-cover bg-center  h-screen  text-center'>
+      <header className='bg-[url(/images/contact-cover.webp)] bg-cover bg-center  h-screen  text-center'>
         <Block className='h-full flex flex-col justify-center '>
           <div className='flex flex-col items-center space-y-10'>
             <h1 className='text-6xl text-center md:text-9xl font-bold font-neo-latina'>
