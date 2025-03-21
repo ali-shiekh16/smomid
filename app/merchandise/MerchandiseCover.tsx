@@ -1,15 +1,13 @@
 import React from 'react';
-import Image from 'next/image';
-import Block from '../components/Block';
-import Nblock from '../components/Nblock';
+import Section from '../components/Section';
 
 const MerchandiseCover = () => {
   return (
-    <Block>
-      <h1 className='text-9xl my-20 font-bold uppercase font-neo-latina'>
+    <Section>
+      <h1 className='text-5xl text-center md:text-left md:text-9xl my-15 md:my-20 font-bold uppercase font-neo-latina'>
         Merchandise
       </h1>
-    </Block>
+    </Section>
     // <Nblock>
     //   <header className='relative bg-[url(/images/merchandise-cover.png)] bg-contain bg-bottom bg-no-repeat h-screen'>
     //     <Block>
