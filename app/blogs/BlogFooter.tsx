@@ -6,13 +6,13 @@ const BlogFooter = () => {
   return (
     <Section>
       <div className='w-full h-[1px] bg-white mb-20'></div>
-      <div className='flex items-center justify-between'>
-        <h2 className='text-7xl font-neo-latina font-semibold'>
+      <div className='md:flex md:items-center md:justify-between space-y-5 md:space-y-0'>
+        <h2 className='text-4xl md:text-7xl font-neo-latina font-semibold'>
           Get the latest <br />
           blogs into your inbox
         </h2>
 
-        <div className='flex justify-between border-1 border-white w-1/4'>
+        <div className='flex justify-between border-1 border-white md:w-1/4'>
           <input
             type='text'
             placeholder='Enter your email'

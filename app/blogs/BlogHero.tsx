@@ -5,8 +5,8 @@ import ButtonOutline from '../components/ButtonOutline';
 const BlogHero = () => {
   return (
     <Section>
-      <div className='grid grid-cols-2'>
-        <div className='space-y-5'>
+      <div className='md:grid md:grid-cols-2'>
+        <div className='space-y-5 text-center md:text-left'>
           <h1 className='text-7xl font-bold font-neo-latina'>Blogs</h1>
           <p className='text-xl'>
             Welcome to Nick’s music blog! Get behind-the-scenes stories, music
