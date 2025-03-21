@@ -1,7 +1,5 @@
 import React from 'react';
 import Section from '../components/Section';
-import ProductCard from './ProductCard';
-import ButtonOutline from '../components/ButtonOutline';
 import HeadingUnderlined from '../components/HeadingUnderlined';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -19,7 +19,7 @@ const ContactSecHeading = ({
 
   return (
     <Section>
-      <div className='flex justify-between'>
+      <div className='flex justify-center md:justify-between'>
         <h2
           className={clsx(
             `font-neo-latina text-4xl md:text-6xl font-bold ${order}`,
@@ -29,7 +29,13 @@ const ContactSecHeading = ({
         >
           {children}
         </h2>
-        <Image src={src} width='500' height='500' alt='line' />
+        <Image
+          className='flex-1 md:block hidden'
+          src={src}
+          width='500'
+          height='500'
+          alt='line'
+        />
       </div>
     </Section>
   );
