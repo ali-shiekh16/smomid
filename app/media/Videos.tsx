@@ -1,7 +1,6 @@
 import React from 'react';
 import Section from '../components/Section';
 import HeadingUnderlined from '../components/HeadingUnderlined';
-import VideoCard from './VideoCard';
 
 // const data = [
 //   {
@@ -76,29 +75,28 @@ const Videos = () => {
     <Section>
       <HeadingUnderlined>Videos</HeadingUnderlined>
       <div className='mt-20 space-y-48'>
-        <div className='md:grid md:grid-cols-2 md:grid-rows-7 md:gap-x-24 space-y-20 md:space-y-48'>
+        <div className='md:grid place-content-center md:grid-cols-2 md:grid-rows-7 md:gap-24 space-y-20 md:space-y-48'>
           {videoLinks.map((video, index) =>
             video.platform === 'youtube' ? (
-              <div className='w-full h-full'>
+              <div className='w-full h-full min-h-60' key={index}>
                 <iframe
-                  key={index}
+                  className='w-full min-h-60 md:min-h-full'
                   src={`https://www.youtube.com/embed/${video.link}?si=R7baQkXJze4PsUEz`}
                   title='YouTube video player'
-                  width={500}
-                  height={300}
+                  // width={500}
+                  // height={300}
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
                 ></iframe>
               </div>
             ) : (
-              <>
+              <div className='w-full h-full  min-h-60' key={index}>
                 <iframe
+                  className='w-full min-h-60 md:min-h-full'
                   src='https://player.vimeo.com/video/161913311?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479'
                   title='Nick Demopoulos - The story of SMOMID'
-                  width={500}
-                  height={300}
                 ></iframe>
                 <script src='https://player.vimeo.com/api/player.js'></script>
-              </>
+              </div>
             )
           )}
         </div>

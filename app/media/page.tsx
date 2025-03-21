@@ -7,7 +7,7 @@ import Masonary from './masonary';
 const Page = () => {
   return (
     <>
-      <Photos />
+      {/* <Photos /> */}
       <Masonary />
       <AudioSection />
       <Videos />
