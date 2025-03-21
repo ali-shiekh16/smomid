@@ -11,7 +11,7 @@ const HeadingUnderlined = ({
     <div>
       <h2
         className={clsx(
-          'px-8 py-2 text-5xl md:px-12 md:py-3 md:text-7xl font-bold font-neo-latina ',
+          'px-8 py-2 text-5xl md:px-12 md:py-3 md:text-7xl font-bold font-neo-latina',
           className
         )}
         {...props}

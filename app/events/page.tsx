@@ -15,7 +15,7 @@ const Page = () => {
       {/* <Stats /> */}
       {/* <ExperienceSmomid /> */}
       <Tickets />
-      <EventFlyer />
+      {/* <EventFlyer /> */}
       {/* <UpcomingConcerts /> */}
       {/* <RecentConcerts /> */}
       {/* <ConcertWall /> */}

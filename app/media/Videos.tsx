@@ -60,7 +60,6 @@ const videoLinks = [
   },
   { platform: 'youtube', link: 'hnLi8TlByKI' },
   { platform: 'youtube', link: 'yCJQHYarh4M' },
-  { platform: 'youtube', link: 'yCJQHYarh4M' },
   { platform: 'youtube', link: 'IHJ9l7iVdnw' },
   { platform: 'youtube', link: 'BWDGMc72-V8' },
   { platform: 'youtube', link: 'wmCLlKnjb-I' },
