@@ -3,6 +3,7 @@ import './globals.css';
 import Block from './components/Block';
 import Navbar from './components/Navbar';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'SMMOID',
@@ -20,13 +21,15 @@ export default function RootLayout({
       <body
         className={`relative bg-gradient-to-t min-h-screen from-primary to-secondary text-white flex flex-col antialiased`}
       >
-        <Image
-          className='absolute top-5 left-5 z-30'
-          src='/icons/logo.svg'
-          alt='Smomid logo'
-          width='70'
-          height='70'
-        />
+        <Link href='/'>
+          <Image
+            className='absolute top-5 left-5 z-30'
+            src='/icons/logo.svg'
+            alt='Smomid logo'
+            width='70'
+            height='70'
+          />
+        </Link>
         <main className='flex-1'>
           <Block>{children}</Block>
         </main>

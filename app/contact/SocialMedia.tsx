@@ -22,7 +22,7 @@ const SocialMedia = () => {
         className='w-full'
       />
       <div className='md:flex md:justify-between md:items-center my-15 md:space-y-0 space-y-10'>
-        <h2 className='text-center text-4xl md:text-5xl font-neo-latina font-bold'>
+        <h2 className='text-center md:text-left text-4xl md:text-5xl font-neo-latina font-bold'>
           Connect with <br /> us on <br /> Social media
         </h2>
         <div className='grid place-content-center grid-cols-3 grid-rows-2 gap-5'>

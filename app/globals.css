@@ -41,3 +41,7 @@ body {
 @utility fancy-text-shadow {
   text-shadow: 5px 5px 10px var(--color-primary);
 }
+
+@utility text-shadow {
+  text-shadow: 5px 5px 10px #333;
+}

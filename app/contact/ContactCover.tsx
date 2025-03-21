@@ -10,13 +10,13 @@ const ContactCover = () => {
       <header className='bg-[url(/images/contact-cover.webp)] bg-cover bg-center  h-screen  text-center'>
         <Block className='h-full flex flex-col justify-center '>
           <div className='flex flex-col items-center space-y-10'>
-            <h1 className='text-6xl text-center md:text-9xl font-bold font-neo-latina'>
+            <h1 className='text-6xl text-center md:text-9xl font-bold font-neo-latina text-shadow'>
               Get in touch
             </h1>
-            <ButtonOutline className=' w-fit rounded-full px-6 py-3 text-5xl'>
-              <span className='text-2xl md:text-3xl'> Contact</span>
+            <ButtonOutline className=' w-fit rounded-full px-6 py-3 text-5xl shadow-sm'>
+              <span className='text-2xl md:text-3xl text-shadow'> Contact</span>
             </ButtonOutline>
-            <p className='text-xl '>
+            <p className='text-xl text-shadow'>
               For bookings, media inquiries, and messages, reach out below.
             </p>
             <Image
