@@ -45,11 +45,11 @@ const tickets = [
 
 const Tickets = () => {
   return (
-    <Section className='font-neo-latina grid grid-cols-2 items-center'>
+    <Section className='font-neo-latina md:grid md:grid-cols-2 items-center'>
       <div>
         {tickets.map((ticket, index) => (
           <div
-            className='flex justify-between space-y-5 items-center'
+            className='flex flex-col md:flex-row justify-between space-y-5 items-center'
             key={index}
           >
             <EventDate
@@ -59,7 +59,7 @@ const Tickets = () => {
               city={ticket.city}
             />
 
-            <div>
+            <div className='mb-10 md:mb-0'>
               <ButtonOutline className='hover:bg-white text-black'>
                 LINK
               </ButtonOutline>

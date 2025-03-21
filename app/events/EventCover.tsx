@@ -5,8 +5,10 @@ import Nblock from '../components/Nblock';
 const EventCover = () => {
   return (
     <Nblock>
-      <header className='bg-[url(/images/events-cover.png)] bg-cover bg-center  h-screen  text-center'>
-        <Block className='h-full flex flex-col justify-center '>
+      <header className='bg-[url(/images/events-cover.jpg)] bg-cover bg-center h-screen text-center'>
+        <div className='absolute inset-0 bg-gradient-to-b from-black/30 to-black/30 z-10'></div>
+        <div className='absolute inset-0 bg-[url(/images/events-cover.jpg)] bg-cover bg-center'></div>
+        <Block className='relative z-20 h-full flex flex-col justify-center '>
           {/* <div className='flex flex-col items-center space-y-10'>
             <div className='flex justify-end  w-full'>
               <ButtonOutline className='w-fit rounded-4xl  px-6 py-3 text-5xld'>
@@ -19,7 +21,9 @@ const EventCover = () => {
               </ButtonOutline>
             </div> */}
 
-          <h1 className='text-9xl font-bold font-neo-latina mb-0'>Events</h1>
+          <h1 className='text-7xl md:text-9xl font-bold font-neo-latina mb-0'>
+            Events
+          </h1>
 
           {/* <div className='flex space-x-15 my-15'>
               <ButtonOutline>

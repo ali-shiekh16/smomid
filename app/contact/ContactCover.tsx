@@ -15,7 +15,7 @@ const ContactCover = () => {
               <span className='text-3xl'> Contact now</span>
             </ButtonOutline>
             <p className='text-xl '>
-              For bookings, media inquiries, and fan messages, reach out below
+              For bookings, media inquiries, and messages, reach out below
               below.
             </p>
             <Image
