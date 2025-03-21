@@ -7,15 +7,17 @@ import Nblock from '../components/Nblock';
 const AboutCover = () => {
   return (
     <Nblock>
-      <header className='bg-[url(/images/about-cover.jpeg)] bg-cover bg-center h-screen'>
-        <Block className='h-full flex flex-col justify-center'>
-          <h1 className='text-9xl font-bold font-neo-latina'>
+      <header className='relative h-screen'>
+        <div className='absolute inset-0 bg-gradient-to-b from-black/30 to-black/30 z-10'></div>
+        <div className='absolute inset-0 bg-[url(/images/about-cover.png)] bg-cover bg-center'></div>
+        <Block className='relative z-20 h-full flex flex-col space-y-3 justify-center'>
+          <h1 className='text-5xl text-center md:text-left md:text-9xl font-bold font-neo-latina'>
             SMOMID
             <br />- Nick Demoopoulos
           </h1>
-          <div className='flex space-x-5'>
+          <div className='flex space-x-5 justify-center md:justify-start'>
             <ButtonOutline>
-              <span className='text-4xl'>Musician</span>
+              <span className='text-3xl md:text-4xl'>Musician</span>
             </ButtonOutline>
           </div>
         </Block>
