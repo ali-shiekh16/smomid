@@ -22,10 +22,10 @@ const PodcastCard = ({
 }: Props) => {
   return (
     <div className='border-1 border-white relative'>
-      <h2 className='font-semibold font-neo-latina text-3xl border-b-1 border-white smd:text-right px-20 py-5'>
+      <h2 className='font-semibold font-neo-latina text-3xl border-b-1 border-white smd:text-right px-10 md:px-20 py-5'>
         {title}
       </h2>
-      <div className='smd:flex smd:items-center smd:space-x-5 px-15 py-10 '>
+      <div className='smd:flex smd:items-center smd:space-x-5 px-5 md:px-15 py-10 '>
         <Image
           className='object-contain smd:absolute smd:top-10 smd:left-15 mb-5 '
           src={image}

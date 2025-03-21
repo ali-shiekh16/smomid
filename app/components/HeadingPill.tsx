@@ -37,7 +37,7 @@ const HeadingPill = ({
 
         <h2
           className={clsx(
-            'px-8 py-2 text-2xl md:px-12 md:py-3 md:text-4xl font-neo-latina border-1 rounded-full',
+            'px-8 py-2 text-4xl md:px-12 md:py-3 md:text-4xl font-neo-latina border-1 rounded-full',
             className
           )}
           {...props}
