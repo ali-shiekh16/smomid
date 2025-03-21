@@ -12,18 +12,18 @@ const HeadingPill = ({
   align = 'left',
   ...props
 }: Props) => {
-  const offset = '8/11';
+  const offset = '8/12';
   let flexLeft = '1';
   let flexRight = offset;
 
   if (align === 'center') {
-    flexLeft = '1/11';
-    flexRight = offset;
+    flexLeft = '1';
+    flexRight = '1';
   }
 
   if (align === 'right') {
     flexLeft = offset;
-    flexRight = '1/11';
+    flexRight = '1';
   }
 
   return (
