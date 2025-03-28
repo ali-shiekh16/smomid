@@ -27,7 +27,7 @@ const ParticleSystem: React.FC<ParticleSystemProps> = ({
   });
 
   return (
-    <points ref={meshRef}>
+    <points ref={meshRef} position={[0, 0, -20]}>
       <bufferGeometry>
         <bufferAttribute
           attach='attributes-position'

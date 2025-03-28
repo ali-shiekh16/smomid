@@ -15,6 +15,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Scene from './home/_sections/Scene';
 import SectionContact from './home/_sections/SectionContact';
+import PageSlider from './home/_sections/PageSlider';
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -86,7 +87,8 @@ export default function Home() {
 
   return (
     <>
-      <SectionContact />
+      {/* <SectionContact /> */}
+      <PageSlider />
     </>
     // <div ref={containerRef} className='w-full border-2 overflow-hidden'>
     //   <video
