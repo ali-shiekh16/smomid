@@ -1,6 +1,12 @@
 import { ArrowRight, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
 import Section from '@/app/components/Section';
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useHomeStore } from '../_store';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Props {
   icon: React.ReactNode;
@@ -24,9 +30,45 @@ const Item = ({ icon, title, text }: Props) => (
   </div>
 );
 const SectionContact = () => {
+  const setActiveIndex = useHomeStore(state => state.setActiveIndex);
+
+  const container = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+      gsap.fromTo(
+        container.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          // duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: container.current,
+            start: 'top 75%', // Animation starts when section enters viewport
+            end: 'top 30%',
+            scrub: true,
+            onEnter: () => setActiveIndex(3),
+            onEnterBack: () => setActiveIndex(3),
+            // markers: true, // Debugging
+          },
+        }
+      );
+      // ScrollTrigger.refresh();
+      // gsap code here...
+      // gsap.to('.box', { x: 100 }); // <-- automatically reverted
+    },
+    { scope: container }
+  ); // <-- easily add a scope fo
+
   return (
     <Section className='h-screen'>
-      <div className='md:flex h-full md:items-center md:justify-between md:space-x-10 space-y-10 md:space-y-0'>
+      <div
+        ref={container}
+        className='md:flex h-full md:items-center md:justify-between md:space-x-10 space-y-10 md:space-y-0'
+      >
         <div className='space-y-10'>
           <h2 className='text-4xl md:text-7xl font-neo-latina font-semibold'>
             Start a <br />

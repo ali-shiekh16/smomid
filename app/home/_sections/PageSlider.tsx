@@ -1,41 +1,26 @@
 'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import LogoAnimation from './LogoAnimation';
 import SectionContact from './SectionContact';
+import SectionNick from './SectionNick';
+import SectionIntro from './SectionIntro';
+import { useHomeStore } from '../_store';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sections = [
   <LogoAnimation />,
-  <SectionContact />,
-  <LogoAnimation />,
+  <SectionNick />,
+  <SectionIntro />,
   <SectionContact />,
 ];
 
 export default function PageSlider() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
-    sectionRefs.current.forEach((section, index) => {
-      if (section) {
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'top center',
-          end: 'bottom center',
-          onEnter: () => setActiveIndex(index),
-          onEnterBack: () => setActiveIndex(index),
-          markers: true, // Enable markers for debugging
-        });
-      }
-    });
-
-    ScrollTrigger.refresh();
-  }, [sections]);
+  const { activeIndex, setActiveIndex } = useHomeStore(); // Zustand store
 
   return (
     <div className='relative flex'>
