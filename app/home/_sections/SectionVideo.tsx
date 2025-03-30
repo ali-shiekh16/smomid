@@ -16,23 +16,13 @@ const SectionVideo = () => {
 
   useGSAP(
     () => {
-      gsap.fromTo(
-        container.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: container.current,
-            start: 'top 75%',
-            end: 'top 30%',
-            scrub: true,
-            onEnter: () => setActiveIndex(2),
-            onEnterBack: () => setActiveIndex(2),
-          },
-        }
-      );
+      ScrollTrigger.create({
+        trigger: container.current,
+        start: 'top 75%',
+        end: 'top 30%',
+        onEnter: () => setActiveIndex(0),
+        onEnterBack: () => setActiveIndex(0),
+      });
     },
     { scope: container }
   );
