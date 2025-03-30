@@ -35,8 +35,8 @@ const SectionContact = () => {
         trigger: container.current,
         start: 'top 75%',
         end: 'top 30%',
-        onEnter: () => setActiveIndex(0),
-        onEnterBack: () => setActiveIndex(0),
+        onEnter: () => setActiveIndex(6),
+        onEnterBack: () => setActiveIndex(6),
       });
     },
     { scope: container }

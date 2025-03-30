@@ -23,8 +23,8 @@ const Events = () => {
           trigger: container.current,
           start: 'top 75%',
           end: 'bottom bottom',
-          onEnter: () => setActiveIndex(1),
-          onEnterBack: () => setActiveIndex(1),
+          onEnter: () => setActiveIndex(4),
+          onEnterBack: () => setActiveIndex(4),
         },
       });
 

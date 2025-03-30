@@ -20,8 +20,8 @@ const SectionVideo = () => {
         trigger: container.current,
         start: 'top 75%',
         end: 'top 30%',
-        onEnter: () => setActiveIndex(0),
-        onEnterBack: () => setActiveIndex(0),
+        onEnter: () => setActiveIndex(3),
+        onEnterBack: () => setActiveIndex(3),
       });
     },
     { scope: container }

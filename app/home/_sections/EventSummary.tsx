@@ -46,8 +46,8 @@ const EventSummary = () => {
         trigger: container.current,
         start: 'top 75%',
         end: 'top 30%',
-        onEnter: () => setActiveIndex(0),
-        onEnterBack: () => setActiveIndex(0),
+        onEnter: () => setActiveIndex(7),
+        onEnterBack: () => setActiveIndex(7),
       });
     },
     { scope: container }
