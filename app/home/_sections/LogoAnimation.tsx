@@ -25,7 +25,7 @@ const LogoAnimation = () => {
           trigger: container.current,
           start: 'top top',
           end: 'bottom 75%',
-          scrub: true,
+          scrub: 3,
           onEnter: () => setActiveIndex(0),
           onEnterBack: () => setActiveIndex(0),
         },

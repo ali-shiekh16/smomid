@@ -55,7 +55,7 @@ const SectionIntro = () => {
           trigger: container.current,
           start: 'top top',
           end: 'bottom 75%',
-          scrub: true,
+          scrub: 2,
           onEnter: () => setActiveIndex(2),
           onEnterBack: () => setActiveIndex(2),
         },
