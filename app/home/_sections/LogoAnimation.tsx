@@ -29,7 +29,6 @@ const LogoAnimation = () => {
           scrub: true,
           onEnter: () => setActiveIndex(0),
           onEnterBack: () => setActiveIndex(0),
-          markers: true,
         },
       });
     }
