@@ -9,6 +9,7 @@ import SectionNick from './SectionNick';
 import SectionIntro from './SectionIntro';
 import { useHomeStore } from '../_store';
 import SectionVideo from './SectionVideo';
+import Events from './Events';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,7 @@ const sections = [
   <SectionNick />,
   <SectionIntro />,
   <SectionVideo />,
+  <Events />,
   <SectionContact />,
 ];
 
