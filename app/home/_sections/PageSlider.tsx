@@ -1,6 +1,5 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import LogoAnimation from './LogoAnimation';
@@ -10,6 +9,7 @@ import SectionIntro from './SectionIntro';
 import { useHomeStore } from '../_store';
 import SectionVideo from './SectionVideo';
 import Events from './Events';
+import Merchandise from './Merchandise';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,12 +19,13 @@ const sections = [
   <SectionIntro />,
   <SectionVideo />,
   <Events />,
+  <Merchandise />,
   <SectionContact />,
 ];
 
 export default function PageSlider() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const { activeIndex, setActiveIndex } = useHomeStore(); // Zustand store
+  const { activeIndex } = useHomeStore(); // Zustand store
 
   return (
     <div className='relative flex'>
