@@ -10,6 +10,7 @@ import { useHomeStore } from '../_store';
 import SectionVideo from './SectionVideo';
 import Events from './Events';
 import Merchandise from './Merchandise';
+import EventSummary from './EventSummary';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +22,7 @@ const sections = [
   <Events />,
   <Merchandise />,
   <SectionContact />,
+  <EventSummary />,
 ];
 
 export default function PageSlider() {
