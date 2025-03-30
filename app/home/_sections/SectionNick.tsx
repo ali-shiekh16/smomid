@@ -10,15 +10,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const SectionNick = () => {
   const setActiveIndex = useHomeStore(state => state.setActiveIndex);
-
   const container = useRef<HTMLDivElement>(null);
   const artistRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useGSAP(
     () => {
       gsap.to(container.current, {
-        ease: 'power2.out',
+        ease: 'none',
         scrollTrigger: {
           trigger: container.current,
           start: 'top 75%',
@@ -28,7 +28,9 @@ const SectionNick = () => {
         },
       });
 
-      ScrollTrigger.create({
+      if (!artistRef.current || !textContentRef.current) return;
+
+      const pinTrigger = ScrollTrigger.create({
         trigger: artistRef.current,
         start: 'top top',
         end: () =>
@@ -37,10 +39,34 @@ const SectionNick = () => {
             window.innerHeight +
             128
           }`,
-        pin: true,
+        pin: artistRef.current,
         pinSpacing: false,
         invalidateOnRefresh: true,
       });
+
+      if (imageRef.current && container.current && pinTrigger) {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: 'top top',
+              end: () => `+=${pinTrigger.end - pinTrigger.start}`,
+              scrub: true,
+            },
+          })
+          .to(imageRef.current, {
+            rotate: -Math.PI * 3,
+            ease: 'none',
+          })
+          .to(imageRef.current, {
+            rotate: Math.PI * 3,
+            ease: 'none',
+          });
+      }
+
+      return () => {
+        pinTrigger?.kill();
+      };
     },
     { scope: container }
   );
@@ -49,10 +75,11 @@ const SectionNick = () => {
     <Section>
       <div
         ref={container}
-        className='grid grid-cols-2 items-center gap-x-15 min-h-[300vh] relative'
+        className='grid grid-cols-2 items-start gap-x-15 relative'
+        style={{ minHeight: '300vh' }}
       >
         <div ref={textContentRef}>
-          <div className='h-screen  flex flex-col justify-center'>
+          <div className='h-screen flex flex-col justify-center'>
             <FancyHeading className='py-8 uppercase'>
               NICK DEMOPOULOS
             </FancyHeading>
@@ -63,14 +90,14 @@ const SectionNick = () => {
             </p>
           </div>
 
-          <div className='h-screen  flex flex-col justify-center'>
+          <div className='h-screen flex flex-col justify-center'>
             <p className='text-2xl'>
               His custom-built instruments enable interactive audiovisual
               performances, generating sound, LED light displays, and video
               animations.
             </p>
           </div>
-          <div className='h-screen  flex flex-col justify-center'>
+          <div className='h-screen flex flex-col justify-center'>
             <p className='text-2xl'>
               Lorem, ipsum dolor sit amet consectetur adipisicing elit.
               Obcaecati consequuntur dolor nulla error. Cupiditate, recusandae.
@@ -78,8 +105,12 @@ const SectionNick = () => {
           </div>
         </div>
 
-        <div ref={artistRef} className=' self-start px-4 pt-32'>
+        <div
+          ref={artistRef}
+          className='w-full h-screen sticky top-0 flex items-center justify-center px-4'
+        >
           <img
+            ref={imageRef}
             src='/images/artist.png'
             alt='Nick Demopoulos'
             className='w-full h-auto object-contain max-w-[30rem]'
