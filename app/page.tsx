@@ -1,21 +1,30 @@
-// import FancyHeading from './components/FancyHeading';
-// import LogoAnimation from './home/_sections/LogoAnimation';
+'use client';
+import gsap from 'gsap';
+import { ReactLenis } from 'lenis/react';
+import { useEffect, useRef } from 'react';
 
-// export default function Home() {
-//   return (
-//     <>
-//       <FancyHeading className='py-8 uppercase'>smomid</FancyHeading>
-//       <LogoAnimation />
-//     </>
-//   );
-// }
 import PageSlider from './home/_sections/PageSlider';
 
 export default function Home() {
+  const lenisRef = useRef(null);
+
+  useEffect(() => {
+    // @ts-ignore
+    function update(time) {
+      // @ts-ignore
+      lenisRef.current?.lenis?.raf(time * 1000);
+    }
+
+    gsap.ticker.add(update);
+
+    return () => gsap.ticker.remove(update);
+  }, []);
+
   return (
     <>
-      {/* <SectionContact /> */}
-      <PageSlider />
+      <ReactLenis root>
+        <PageSlider />
+      </ReactLenis>
     </>
   );
 }
