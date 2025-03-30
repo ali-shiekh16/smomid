@@ -13,7 +13,7 @@ const AboutCover = () => {
         <Block className='relative z-10 h-full flex flex-col space-y-3 justify-center'>
           <h1 className='text-5xl text-center md:text-left md:text-9xl font-bold font-neo-latina text-shadow'>
             SMOMID
-            <br />- Nick Demoopoulos
+            <br />- Nick Demopoulos
           </h1>
           <div className='flex space-x-5 justify-center md:justify-start shadow-sm'>
             <ButtonOutline>

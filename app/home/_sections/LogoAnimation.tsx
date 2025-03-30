@@ -6,7 +6,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useHomeStore } from '../_store';
 import * as THREE from 'three';
-import { Loader } from '@react-three/drei';
 
 gsap.registerPlugin(useGSAP);
 
@@ -43,7 +42,6 @@ const LogoAnimation = () => {
             texturePath='/images/logo.png'
             onInit={handleParticleInit}
           />
-          <Loader />
         </Canvas>
       </div>
     </Nblock>

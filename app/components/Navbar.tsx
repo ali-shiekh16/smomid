@@ -5,11 +5,20 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
+const NavLink = ({
+  href,
+  children,
+  target,
+}: {
+  href: string;
+  children: ReactNode;
+  target?: '_self' | '_blank';
+}) => {
   const pathname = usePathname();
   return (
     <Link
       href={href}
+      target={target || '_self'}
       className={clsx('text-lg', {
         'font-bold text-3xl underline underline-offset-4': pathname === href,
       })}
@@ -21,7 +30,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
 
 const NavIcon = ({ href, icon }: { href: string; icon: string }) => {
   return (
-    <NavLink href={href}>
+    <NavLink href={href} target='_blank'>
       <Image src={`/icons/${icon}.svg`} alt='Logo.' width='20' height='20' />
     </NavLink>
   );
@@ -41,13 +50,14 @@ const Navbar = () => {
         <NavLink href='/blogs'>Blogs</NavLink>
       </ul>
       <ul className='flex space-x-5'>
-        <NavIcon href='#' icon='instagram' />
-        <NavIcon href='#' icon='twitter' />
-        <NavIcon href='#' icon='youtube' />
-        <NavIcon href='#' icon='tiktok' />
-        <NavIcon href='#' icon='spotify' />
-        <NavIcon href='#' icon='music' />
-        <NavIcon href='#' icon='sound-cloud' />
+        <NavIcon href='https://www.instagram.com/smomid/' icon='instagram' />
+        <NavIcon href='https://www.youtube.com/@Smomid' icon='youtube' />
+        {/* <NavIcon href='https://www.facebook.com/Smomid' icon='facebook' /> */}
+        <NavIcon href='https://smomid.bandcamp.com/' icon='bandcamp' />
+        <NavIcon
+          href='https://open.spotify.com/artist/34tsz5yU9BVkcSjlZvzP2W'
+          icon='spotify'
+        />
       </ul>
     </nav>
   );
