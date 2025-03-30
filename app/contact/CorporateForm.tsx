@@ -22,10 +22,10 @@ const CorporateForm = () => {
             <TextField label='Name :' htmlFor='name' />
             <TextField label='Email:' htmlFor='email' />
             <TextField label='Contact no:' htmlFor='contact' />
-            <div className='md:flex md:space-y-0 space-y-5 space-x-10'>
-              <Select htmlFor='inquiryType' label='Inquiry Type' />
-              <Select htmlFor='attachment' label='Attachment' />
-            </div>
+            {/* <div className='md:flex md:space-y-0 space-y-5 space-x-10'> */}
+            {/* <input type="file" name="file" id="" /> */}
+            {/* <Select htmlFor='attachment' label='Attachment' /> */}
+            {/* </div> */}
           </div>
           <div className='flex-2'>
             <Textarea label='Message :' htmlFor='message' />
