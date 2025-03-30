@@ -36,7 +36,7 @@ const data = [
     text: '',
     image: '/images/press/3.png',
     date: '22-02-25',
-    btnText: 'Podcast Link',
+    btnText: 'Link',
   },
   {
     title: 'SMOMID: ARTICLE BY BIG TAKEOVER EXCLUSIVES',
@@ -45,7 +45,7 @@ const data = [
     text: '',
     image: '/images/press/4.png',
     date: '22-02-25',
-    btnText: 'Podcast Link',
+    btnText: 'Link',
   },
 ];
 
