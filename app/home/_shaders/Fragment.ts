@@ -8,7 +8,7 @@ const particleFragmentShader = `
     // Create a soft circular particle
     vec2 centered = gl_PointCoord - vec2(0.5);
     float dist = length(centered);
-    float alpha = smoothstep(0.45, 0.0, dist);
+    float alpha = smoothstep(0.3, 0.0, dist);
 
     // Sample the color directly from the texture
     vec4 textureColor = texture2D(pointTexture, vUv);
