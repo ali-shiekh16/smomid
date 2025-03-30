@@ -7,7 +7,7 @@ import Nblock from '../components/Nblock';
 const AudioSection = () => {
   return (
     <Section>
-      <HeadingUnderlined>Audio Section</HeadingUnderlined>
+      <HeadingUnderlined>Audio</HeadingUnderlined>
       <Nblock className='my-20 space-y-15'>
         <iframe
           width='100%'
