@@ -2,7 +2,6 @@ import React from 'react';
 import Section from '../components/Section';
 import EventDate from './EventDate';
 import ButtonOutline from '../components/ButtonOutline';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const tickets = [
@@ -48,15 +47,6 @@ const Tickets = () => {
           </div>
         ))}
       </div>
-
-      <Image
-        className='object-contain w-full h-full'
-        src='/icons/map.svg'
-        alt='US Map.'
-        width={500}
-        height={500}
-        objectFit='contain'
-      />
     </Section>
   );
 };
