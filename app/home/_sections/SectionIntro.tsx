@@ -57,11 +57,32 @@ const SectionIntro = () => {
         .to('.canvas-wrapper', {
           opacity: 1,
         })
+        .to(material.uniforms.u_density, {
+          value: 0.1,
+          ease: 'power4.out',
+          duration: 0.1,
+        })
+        .to(
+          material.uniforms.u_size,
+          {
+            value: 1,
+            ease: 'power4.out',
+          },
+          '<'
+        )
         .to(material.uniforms.dispersion, {
           value: 1,
           ease: 'power2.out',
           duration: 1,
         })
+        .to(
+          material.uniforms.u_density,
+          {
+            value: 0.01,
+            ease: 'power4.out',
+          },
+          '<'
+        )
         .to(material.uniforms.u_opacity, {
           value: 0,
           ease: 'power2.out',
@@ -113,6 +134,8 @@ const SectionIntro = () => {
               ref={meshRef}
               texturePath='/images/guitar.png'
               onInit={handleParticleInit}
+              particleSize={0.5}
+              step={3}
             />
           </Canvas>
         </div>
