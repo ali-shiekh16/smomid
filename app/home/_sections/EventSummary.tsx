@@ -61,7 +61,9 @@ const EventSummary = () => {
             <Link href='/events'>Show All Events</Link>
           </div>
           <button className='bg-white text-black px-4'>
-            <ArrowRight size={25} />
+            <Link href='/events'>
+              <ArrowRight size={25} />
+            </Link>
           </button>
         </div>
         <div className='grid grid-cols-2 gap-8'>

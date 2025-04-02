@@ -69,7 +69,7 @@ const LogoAnimation = () => {
   return (
     <Nblock>
       <div ref={container} className='h-[200vh] w-full relative'>
-        <div className='fixed h-screen w-full canvas-wrapper'>
+        <div className='fixed h-screen w-full canvas-wrapper -z-10'>
           <Canvas>
             <ParticleSystem
               ref={meshRef}

@@ -125,7 +125,7 @@ const SectionIntro = () => {
 
         <div
           ref={artistRef}
-          className='w-full h-screen fixed inset-0 canvas-wrapper opacity-0'
+          className='w-full h-screen fixed inset-0 canvas-wrapper opacity-0 -z-10'
         >
           <Canvas>
             <ambientLight intensity={0.5} />

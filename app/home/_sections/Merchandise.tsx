@@ -46,10 +46,14 @@ const Merchandise = () => {
       <div ref={container}>
         <div className='flex ml-auto mb-10 justify-between border-1 border-white self-end w-1/3'>
           <div className='text-xl bg-transparent text-white outline-none border-none p-2 '>
-            <Link href='/merchandise'>Show All Merchandise</Link>
+            <Link href='/merchandise' className='cursor-pointer'>
+              Show All Merchandise
+            </Link>
           </div>
-          <button className='bg-white text-black px-4'>
-            <ArrowRight size={25} />
+          <button className='bg-white text-black px-4 cursor-pointer'>
+            <Link href='/merchandise'>
+              <ArrowRight size={25} />
+            </Link>
           </button>
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>

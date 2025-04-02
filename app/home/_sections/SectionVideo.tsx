@@ -38,7 +38,9 @@ const SectionVideo = () => {
             <Link href='/media'>Show All Videos</Link>
           </div>
           <button className='bg-white text-black px-4'>
-            <ArrowRight size={25} />
+            <Link href='/media'>
+              <ArrowRight size={25} />
+            </Link>
           </button>
         </div>
 
