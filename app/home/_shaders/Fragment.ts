@@ -2,12 +2,19 @@ const particleFragmentShader = `
  
   uniform sampler2D pointTexture;
   uniform float u_opacity;
+
+  varying float vVisible;
   
   varying vec3 vColor;
   varying vec2 vUv;
 
   void main() {
-    // Create a soft circular particle
+
+   // Discard invisible particles
+    if (vVisible < 0.5) {
+        discard;
+    }  
+
     vec2 centered = gl_PointCoord - vec2(0.5);
     float dist = length(centered);
     // float alpha = smoothstep(0.3, 0.0, dist);

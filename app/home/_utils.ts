@@ -1,6 +1,6 @@
 import { Texture } from 'three';
 
-const extractParticlesData = (texture: Texture) => {
+const extractParticlesData = (texture: Texture, step = 5) => {
   // Create a canvas to process the image
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -23,9 +23,8 @@ const extractParticlesData = (texture: Texture) => {
   const particles: { positions: number[]; colors: number[] }[] = [];
 
   if (imageData) {
-    // Reduce step size to 1 or 2 for higher density
-    for (let y = 0; y < canvas.height; y += 7) {
-      for (let x = 0; x < canvas.width; x += 7) {
+    for (let y = 0; y < canvas.height; y += step) {
+      for (let x = 0; x < canvas.width; x += step) {
         const index = (y * canvas.width + x) * 4;
         const r = imageData.data[index] / 255;
         const g = imageData.data[index + 1] / 255;
