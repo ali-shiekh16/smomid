@@ -17,26 +17,11 @@ const LogoAnimation = () => {
   const container = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP({ scope: container });
-  useGSAP(
-    () => {
-      if (!container.current) return;
-
-      ScrollTrigger.create({
-        trigger: container.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: '.canvas-wrapper',
-        pinSpacing: false,
-        invalidateOnRefresh: true,
-      });
-    },
-    { scope: container, dependencies: [] }
-  );
 
   const handleParticleInit = contextSafe(
     (_: THREE.Points, material: THREE.ShaderMaterial) => {
       gsap.to(material.uniforms.dispersion, {
-        value: 2,
+        value: 3,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: container.current,
@@ -44,7 +29,19 @@ const LogoAnimation = () => {
           end: 'bottom 75%',
           scrub: 1,
           onEnter: () => setActiveIndex(0),
-          onEnterBack: () => setActiveIndex(0),
+          onEnterBack: () => {
+            setActiveIndex(0);
+          },
+        },
+      });
+
+      gsap.to(material.uniforms.u_opacity, {
+        value: 0,
+        scrollTrigger: {
+          trigger: container.current,
+          start: '70% top',
+          end: 'bottom bottom',
+          scrub: 1,
         },
       });
     }
@@ -53,7 +50,7 @@ const LogoAnimation = () => {
   return (
     <Nblock>
       <div ref={container} className='h-[300vh] w-full relative'>
-        <div className='h-screen w-full canvas-wrapper'>
+        <div className='fixed h-screen w-full canvas-wrapper'>
           <Canvas>
             <ParticleSystem
               ref={meshRef}

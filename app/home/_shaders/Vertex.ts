@@ -24,7 +24,8 @@ void main() {
     vec3 randomDisplacement = vec3(
         (hash(initialPosition + vec3(1.0, 0.0, 0.0)) * 2.0 - 1.0) * 20.0,
         (hash(initialPosition + vec3(0.0, 1.0, 0.0)) * 2.0 - 1.0) * 20.0,
-        (hash(initialPosition + vec3(0.0, 0.0, 1.0)) * 2.0 - 1.0) * 20.0
+        5.
+        // (hash(initialPosition + vec3(0.0, 0.0, 1.0)) * 2.0 - 1.0) * 20.0
     );
     
     // Ensure every particle moves, scaled by dispersion

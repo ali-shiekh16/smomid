@@ -72,52 +72,52 @@ const SectionNick = () => {
   );
 
   return (
-    <Section>
-      <div
-        ref={container}
-        className='grid grid-cols-2 items-start gap-x-15 relative'
-        style={{ minHeight: '300vh' }}
-      >
-        <div ref={textContentRef}>
-          <div className='h-screen flex flex-col justify-center'>
-            <FancyHeading className='py-8 uppercase'>
-              NICK DEMOPOULOS
-            </FancyHeading>
-            <p className='text-2xl'>
-              Nick Demopoulos is a visionary musician, composer, and inventor of
-              the Smomid (String Modeling Midi Device), redefining live music
-              through technology.
-            </p>
-          </div>
-
-          <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
-              His custom-built instruments enable interactive audiovisual
-              performances, generating sound, LED light displays, and video
-              animations.
-            </p>
-          </div>
-          <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Obcaecati consequuntur dolor nulla error. Cupiditate, recusandae.
-            </p>
-          </div>
+    // <Section>
+    <div
+      ref={container}
+      className='grid grid-cols-2 items-start gap-x-15 relative'
+      style={{ minHeight: '300vh' }}
+    >
+      <div ref={textContentRef}>
+        <div className='h-screen flex flex-col justify-center'>
+          <FancyHeading className='py-8 uppercase'>
+            NICK DEMOPOULOS
+          </FancyHeading>
+          <p className='text-2xl'>
+            Nick Demopoulos is a visionary musician, composer, and inventor of
+            the Smomid (String Modeling Midi Device), redefining live music
+            through technology.
+          </p>
         </div>
 
-        <div
-          ref={artistRef}
-          className='w-full h-screen sticky top-0 flex items-center justify-center px-4'
-        >
-          <img
-            ref={imageRef}
-            src='/images/artist.png'
-            alt='Nick Demopoulos'
-            className='w-full h-auto object-contain max-w-[30rem]'
-          />
+        <div className='h-screen flex flex-col justify-center'>
+          <p className='text-2xl'>
+            His custom-built instruments enable interactive audiovisual
+            performances, generating sound, LED light displays, and video
+            animations.
+          </p>
+        </div>
+        <div className='h-screen flex flex-col justify-center'>
+          <p className='text-2xl'>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+            consequuntur dolor nulla error. Cupiditate, recusandae.
+          </p>
         </div>
       </div>
-    </Section>
+
+      <div
+        ref={artistRef}
+        className='w-full h-screen sticky top-0 flex items-center justify-center px-4'
+      >
+        <img
+          ref={imageRef}
+          src='/images/artist.png'
+          alt='Nick Demopoulos'
+          className='w-full h-auto object-contain max-w-[30rem]'
+        />
+      </div>
+    </div>
+    // </Section>
   );
 };
 
