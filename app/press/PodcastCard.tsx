@@ -2,23 +2,25 @@ import React from 'react';
 import ButtonOutline from '../components/ButtonOutline';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Props {
   title: string;
   subtitle: string;
   text: string;
   image: string;
-  date: string;
+  date?: string;
   btnText: string;
+  link?: string;
 }
 
 const PodcastCard = ({
   title,
   subtitle,
-  text,
   image,
   date,
   btnText,
+  link = '#',
 }: Props) => {
   return (
     <div className='border-1 border-white relative'>
@@ -27,12 +29,12 @@ const PodcastCard = ({
       </h2>
       <div className='smd:flex smd:items-center smd:space-x-5 px-5 md:px-15 py-10 '>
         <Image
-          className='object-contain smd:absolute smd:top-10 smd:left-15 mb-5 '
+          className='object-cover  h-2/3 smd:absolute smd:top-10 smd:left-15 mb-5 '
           src={image}
           alt='Nick Podcast'
           width='400'
           height='400'
-          objectFit='contain'
+          objectFit='cover'
         />
         <div className='smd:h-80 smd:min-w-[400px]'></div>
         <div className='flex flex-col items-end'>
@@ -41,22 +43,15 @@ const PodcastCard = ({
           </h3>
           {/* <p>{text}</p> */}
           <ButtonOutline className='bg-white '>
-            <span className='text-black'>
-              {btnText} <ArrowUpRight className='inline-block' />
-            </span>
+            <Link href={link} target='_blank'>
+              <span className='text-black'>
+                {btnText} <ArrowUpRight className='inline-block' />
+              </span>
+            </Link>
           </ButtonOutline>
-          <p className='mt-10'>Posted on Youtube on: {date}</p>
+          {date && <p className='mt-10'>Posted on: {date}</p>}
         </div>
       </div>
-
-      {/* <div className='flex justify-between items-center px-10 py-2 border-t-1 border-white'>
-        <p>Posted on Youtube on: {date}</p>
-        <ButtonOutline className='bg-white '>
-          <span className='text-black'>
-            {btnText} <ArrowUpRight className='inline-block' />
-          </span>
-        </ButtonOutline>
-      </div> */}
     </div>
   );
 };
