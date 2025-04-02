@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import FancyHeading from '@/app/components/FancyHeading';
 import Section from '@/app/components/Section';
 import { useHomeStore } from '../_store';
+import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import gsap from 'gsap';
 import { Canvas } from '@react-three/fiber';
 import ParticleSystem from '../_components/ParticleSystem';
 
@@ -18,23 +18,10 @@ const SectionIntro = () => {
   const meshRef = useRef<THREE.Points>(null);
   const artistRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
+
   useGSAP(
     () => {
       if (!artistRef.current || !textContentRef.current) return;
-
-      ScrollTrigger.create({
-        trigger: artistRef.current,
-        start: 'top top',
-        end: () =>
-          `+=${
-            (textContentRef.current?.offsetHeight || 0) -
-            window.innerHeight +
-            128
-          }`,
-        pin: artistRef.current,
-        pinSpacing: false,
-        invalidateOnRefresh: true,
-      });
     },
     { scope: container, dependencies: [] }
   );
@@ -43,23 +30,43 @@ const SectionIntro = () => {
 
   const handleParticleInit = contextSafe(
     (_points: THREE.Points, material: THREE.ShaderMaterial) => {
-      if (!material?.uniforms?.dispersion) {
-        console.error('Dispersion uniform not found on material');
-        return;
-      }
+      if (!material?.uniforms?.dispersion || !meshRef.current) return;
 
-      gsap.to(material.uniforms.dispersion, {
-        value: 2,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: container.current,
-          start: 'top top',
-          end: 'bottom 75%',
-          scrub: 2,
-          onEnter: () => setActiveIndex(2),
-          onEnterBack: () => setActiveIndex(2),
-        },
-      });
+      meshRef.current.position.x = 20;
+
+      material.uniforms.u_opacity.value = 0.0;
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: container.current,
+            start: '15% bottom',
+            end: 'bottom 75%',
+            scrub: 1,
+            onEnter: () => setActiveIndex(2),
+            onEnterBack: () => setActiveIndex(2),
+            invalidateOnRefresh: true,
+            preventOverlaps: true,
+          },
+        })
+        .to(material.uniforms.u_opacity, {
+          value: 1,
+          ease: 'power2.inOut',
+          duration: 0.001,
+        })
+        .to('.canvas-wrapper', {
+          opacity: 1,
+        })
+        .to(material.uniforms.dispersion, {
+          value: 1,
+          ease: 'power2.out',
+          duration: 1,
+        })
+        .to(material.uniforms.u_opacity, {
+          value: 0,
+          ease: 'power2.out',
+          duration: 0.1,
+        });
     }
   );
 
@@ -95,7 +102,10 @@ const SectionIntro = () => {
           </div>
         </div>
 
-        <div ref={artistRef} className='w-full h-screen sticky top-0'>
+        <div
+          ref={artistRef}
+          className='w-full h-screen fixed inset-0 canvas-wrapper opacity-0'
+        >
           <Canvas>
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} />
