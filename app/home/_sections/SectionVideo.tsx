@@ -6,6 +6,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useHomeStore } from '../_store';
+import Image from 'next/image';
+import PlayButton from '@/app/components/PlayButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,13 +46,20 @@ const SectionVideo = () => {
           </button>
         </div>
 
-        <div className='w-full  h-[70vh] flex justify-center'>
-          <iframe
-            className='w-full h-full'
-            src={`https://www.youtube.com/embed/IHJ9l7iVdnw?si=R7baQkXJze4PsUEz`}
-            title='YouTube video player'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-          ></iframe>
+        <div className='w-full bg-amber-500  h-[70vh] flex justify-center relative'>
+          <Link
+            href='https://www.youtube.com/watch?v=IHJ9l7iVdnw&ab_channel=Smomid'
+            target='_blank'
+          >
+            <PlayButton className=' absolute top-1/2 left-1/2 -translate-1/2' />
+          </Link>
+          <Image
+            src='/images/media/8.webp'
+            alt='Video Thumbnail'
+            width={2000}
+            height={2000}
+            className='object-cover w-full h-full rounded-lg'
+          />
         </div>
       </div>
     </Section>
