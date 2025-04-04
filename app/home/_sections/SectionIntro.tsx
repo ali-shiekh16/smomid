@@ -35,7 +35,7 @@ const SectionIntro = () => {
     (_points: THREE.Points, material: THREE.ShaderMaterial) => {
       if (!material?.uniforms?.dispersion || !meshRef.current) return;
 
-      meshRef.current.position.x = window.innerWidth < 768 ? 0 : 20;
+      meshRef.current.position.x = (window && window.innerWidth) < 768 ? 0 : 20;
 
       material.uniforms.u_opacity.value = 0.0;
 
@@ -114,7 +114,7 @@ const SectionIntro = () => {
               onInit={handleParticleInit}
               particleSize={0.5}
               step={3}
-              scale={window.innerWidth < 768 ? 1.5 : 1}
+              scale={(window && window.innerWidth) < 768 ? 1.5 : 1}
             />
           </Canvas>
         </div>
