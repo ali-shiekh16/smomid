@@ -111,14 +111,15 @@ const SectionIntro = () => {
           <div className='h-screen flex flex-col justify-center'>
             <p className='text-2xl'>
               Unlike traditional guitars, Smomid features touch-sensitive
-              surfaces, LED feedback, and deep integration with digital audio
-              workstations (DAWs).
+              surfaces, LED feedback, and enables real time interaction with
+              interactive software.
             </p>
           </div>
           <div className='h-screen flex flex-col justify-center'>
             <p className='text-2xl'>
-              Designed to push musical boundaries and offer a unique platform
-              for creative expression.
+              With Smomid a musicians gestures can be remapped to create sound,
+              light, visual animations, control a robotic servo among many other
+              applications
             </p>
           </div>
         </div>

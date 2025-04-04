@@ -99,8 +99,9 @@ const SectionNick = () => {
         </div>
         <div className='h-screen flex flex-col justify-center'>
           <p className='text-2xl'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-            consequuntur dolor nulla error. Cupiditate, recusandae.
+            His innovative approach pushes the boundaries of sound and
+            performance, blending digital innovation with analog charm to create
+            immersive musical experiences.
           </p>
         </div>
       </div>

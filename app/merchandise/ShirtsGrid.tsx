@@ -8,7 +8,7 @@ const ShirtsGrid = () => {
   return (
     <Section>
       <HeadingUnderlined className='uppercase text-center md:text-right'>
-        Tees
+        Clothes
       </HeadingUnderlined>
       <div className='flex flex-col my-20  w-full mx-auto'>
         <p className='text-2xl mb-2'>S,M,L,XL,XXL</p>

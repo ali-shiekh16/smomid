@@ -21,12 +21,6 @@ const InterviewsAndPodcasts = () => {
             link={podcast.link}
           />
         ))}
-
-        {/* <div className='flex justify-center'>
-          <button className=' border-1 border-white p-2 font-neo-latina text-2xl cursor-pointer'>
-            Show more
-          </button>
-        </div> */}
       </div>
     </Section>
   );
