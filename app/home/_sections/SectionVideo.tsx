@@ -33,7 +33,7 @@ const SectionVideo = () => {
         ref={container}
         className='w-full min-h-screen  flex flex-col items-center justify-center gap-10'
       >
-        <div className='flex justify-between border-1 border-white self-end w-1/3'>
+        <div className='flex justify-between border-1 border-white self-end w-full md:w-1/3'>
           <div className='text-xl bg-transparent text-white outline-none border-none p-2 '>
             <Link href='/media'>Show All Videos</Link>
           </div>
