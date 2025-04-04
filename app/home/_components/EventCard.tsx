@@ -16,15 +16,18 @@ const EventCard = ({ date, children, image, position = 'top' }: Props) => {
         className={clsx(
           {
             'top-0 -translate-y-1/2': position === 'top',
-            'bottom-0 translate-y-1/2': position === 'bottom',
+            'top-0 md:bottom-0 -translate-y-1/2 md:translate-y-1/2':
+              position === 'bottom',
           },
-          'bg-white px-8 py-2 absolute left-[50%] -translate-x-1/2'
+          'bg-white px-8 py-1 md:py-2 absolute left-[50%] -translate-x-1/2'
         )}
       >
-        <p className='text-center text-2xl text-black font-semibold'>{date}</p>
+        <p className='text-center text-lg md:text-2xl text-black font-semibold'>
+          {date}
+        </p>
       </div>
 
-      <div className='bg-black/50 py-6 absolute top-[50%] w-full -translate-y-1/2 backdrop-blur-xl'>
+      <div className='bg-black/50 py-2 md:py-6 absolute top-[50%] w-full -translate-y-1/2 backdrop-blur-xl'>
         {children}
       </div>
       <Image

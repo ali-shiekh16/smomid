@@ -15,7 +15,7 @@ const data = [
     image: '/images/media/13.webp',
     date: 'March 3rd, 2025',
     children: (
-      <p className='text-center text-2xl text-white '>
+      <p className='text-center text-lg md:text-2xl text-white '>
         Tradesman Bar
         <br />
         222 bushwick Ave, Brooklyn, <br /> NY 11206
@@ -26,7 +26,7 @@ const data = [
     image: '/images/media/14.webp',
     date: 'March 23rd, 2025',
     children: (
-      <p className='text-center text-2xl text-white '>
+      <p className='text-center text-lg md:text-2xl text-white '>
         Ivy House
         <br />
         322 Troutman Street Brooklyn, <br /> NY Vegas
@@ -56,7 +56,7 @@ const EventSummary = () => {
   return (
     <Section>
       <div ref={container}>
-        <div className='flex ml-auto mb-20 justify-between border-1 border-white self-end w-1/3'>
+        <div className='flex ml-auto mb-20 justify-between border-1 border-white self-end md:w-1/3'>
           <div className='text-xl bg-transparent text-white outline-none border-none p-2 '>
             <Link href='/events'>Show All Events</Link>
           </div>
@@ -66,7 +66,7 @@ const EventSummary = () => {
             </Link>
           </button>
         </div>
-        <div className='grid grid-cols-2 gap-8'>
+        <div className='md:grid md:grid-cols-2 md:gap-8 space-y-10 md:space-y-0'>
           {data.map((item, index) => (
             <div key={index}>
               <EventCard
