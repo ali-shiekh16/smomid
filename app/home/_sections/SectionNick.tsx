@@ -5,6 +5,7 @@ import { useHomeStore } from '../_store';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
+import Text from '../_components/Text';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,7 +81,7 @@ const SectionNick = () => {
     >
       <div
         ref={artistRef}
-        className='w-full h-[40vh] backdrop-blur-3xl md:backdrop-blur-none rounded-lg  md:h-screen flex items-start md:items-center justify-center px-4 md:order-1'
+        className='w-full h-[40vh] rounded-lg  md:h-screen flex items-start md:items-center justify-center px-4 md:order-1'
       >
         <img
           ref={imageRef}
@@ -95,26 +96,26 @@ const SectionNick = () => {
           <FancyHeading className='py-8 uppercase'>
             NICK DEMOPOULOS
           </FancyHeading>
-          <p className='text-2xl'>
+          <Text>
             Nick Demopoulos is a visionary musician, composer, and inventor of
             the Smomid (String Modeling Midi Device), redefining live music
             through technology.
-          </p>
+          </Text>
         </div>
 
         <div className='h-screen flex flex-col justify-center'>
-          <p className='text-2xl'>
+          <Text>
             His custom-built instruments enable interactive audiovisual
             performances, generating sound, LED light displays, and video
             animations.
-          </p>
+          </Text>
         </div>
         <div className='h-screen flex flex-col justify-center'>
-          <p className='text-2xl'>
+          <Text>
             His innovative approach pushes the boundaries of sound and
             performance, blending digital innovation with analog charm to create
             immersive musical experiences.
-          </p>
+          </Text>
         </div>
       </div>
     </div>

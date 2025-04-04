@@ -8,6 +8,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Canvas } from '@react-three/fiber';
 import ParticleSystem from '../_components/ParticleSystem';
+import Text from '../_components/Text';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -120,24 +121,24 @@ const SectionIntro = () => {
             <FancyHeading className='py-8 uppercase'>
               What is a SMOMID?
             </FancyHeading>
-            <p className='text-2xl'>
+            <Text>
               <strong> Smomid (String Modeling Midi Device)</strong> is a
               custom-built electronic instrument by musician Nick Demopoulos.
-            </p>
+            </Text>
           </div>
           <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
+            <Text>
               Unlike traditional guitars, Smomid features touch-sensitive
               surfaces, LED feedback, and enables real time interaction with
               interactive software.
-            </p>
+            </Text>
           </div>
           <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
+            <Text>
               With Smomid a musicians gestures can be remapped to create sound,
               light, visual animations, control a robotic servo among many other
               applications
-            </p>
+            </Text>
           </div>
         </div>
       </div>

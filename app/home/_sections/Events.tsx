@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
 import MapSvgDots from '../_components/MapSvgDots';
+import Text from '../_components/Text';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,34 +83,11 @@ const Events = () => {
     <Section>
       <div
         ref={container}
-        className='grid grid-cols-2 items-start gap-x-15 relative'
+        className='md:grid md:grid-cols-2 md:items-start md:gap-x-15 relative'
       >
-        <div ref={textContentRef}>
-          <div className='h-screen flex flex-col justify-center'>
-            <FancyHeading className='py-8 uppercase'>Events</FancyHeading>
-            <p className='text-2xl'>
-              Get ready, USA! I’m bringing the energy, the music, and the vibes
-              to six electrifying cities for an unforgettable concert
-              experience!
-            </p>
-          </div>
-          <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
-              From heart-thumping rhythms to soul-stirring melodies, every
-              moment is crafted to take you on an emotional journey.
-            </p>
-          </div>
-          <div className='h-screen flex flex-col justify-center'>
-            <p className='text-2xl'>
-              Let’s make memories that will last a lifetime! Grab your crew and
-              get ready to lose yourself in the music.
-            </p>
-          </div>
-        </div>
-
         <div
           ref={artistRef}
-          className='h-screen sticky top-0 self-start flex items-center justify-center px-4'
+          className='h-screen sticky top-0 self-start flex items-center justify-center px-4 md:order-1'
         >
           <svg
             ref={svgRef}
@@ -192,6 +170,28 @@ const Events = () => {
               />
             </g>
           </svg>
+        </div>
+        <div ref={textContentRef}>
+          <div className='h-screen flex flex-col justify-center'>
+            <FancyHeading className='py-8 uppercase'>Events</FancyHeading>
+            <Text className='text-2xl backdrop-blur-2xl py-5 px-2 rounded-md'>
+              Get ready, USA! I’m bringing the energy, the music, and the vibes
+              to six electrifying cities for an unforgettable concert
+              experience!
+            </Text>
+          </div>
+          <div className='h-screen flex flex-col justify-center '>
+            <Text className='text-2xl backdrop-blur-2xl py-5 px-2 rounded-md'>
+              From heart-thumping rhythms to soul-stirring melodies, every
+              moment is crafted to take you on an emotional journey.
+            </Text>
+          </div>
+          <div className='h-screen flex flex-col justify-center '>
+            <Text className='text-2xl backdrop-blur-2xl py-5 px-2 rounded-md'>
+              Let’s make memories that will last a lifetime! Grab your crew and
+              get ready to lose yourself in the music.
+            </Text>
+          </div>
         </div>
       </div>
     </Section>
