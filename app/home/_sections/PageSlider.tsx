@@ -8,7 +8,6 @@ import SectionNick from './SectionNick';
 import SectionIntro from './SectionIntro';
 import { useHomeStore } from '../_store';
 import SectionVideo from './SectionVideo';
-import Events from './Events';
 import Merchandise from './Merchandise';
 import EventSummary from './EventSummary';
 
@@ -19,10 +18,9 @@ const sections = [
   <SectionNick />,
   <SectionIntro />,
   <SectionVideo />,
-  <Events />,
+  <EventSummary />,
   <Merchandise />,
   <SectionContact />,
-  <EventSummary />,
 ];
 
 export default function PageSlider() {

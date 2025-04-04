@@ -46,8 +46,8 @@ const EventSummary = () => {
         trigger: container.current,
         start: 'top 75%',
         end: 'top 30%',
-        onEnter: () => setActiveIndex(7),
-        onEnterBack: () => setActiveIndex(7),
+        onEnter: () => setActiveIndex(4),
+        onEnterBack: () => setActiveIndex(4),
       });
     },
     { scope: container }
@@ -55,7 +55,7 @@ const EventSummary = () => {
 
   return (
     <Section>
-      <div ref={container}>
+      <div ref={container} className='h-screen'>
         <div className='flex ml-auto mb-20 justify-between border-1 border-white self-end md:w-1/3'>
           <div className='text-xl bg-transparent text-white outline-none border-none p-2 '>
             <Link href='/events'>Show All Events</Link>
