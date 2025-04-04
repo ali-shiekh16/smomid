@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import * as THREE from 'three';
 import FancyHeading from '@/app/components/FancyHeading';

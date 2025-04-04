@@ -1,5 +1,4 @@
 import FancyHeading from '@/app/components/FancyHeading';
-import Section from '@/app/components/Section';
 import React, { useRef } from 'react';
 import { useHomeStore } from '../_store';
 import { useGSAP } from '@gsap/react';
