@@ -8,7 +8,7 @@ const FancyHeading = ({ children, className, ...props }: Props) => {
     <div
       {...props}
       className={clsx(
-        'font-neo-latina fancy-text-shadow text-7xl font-extrabold  text-primary uppercase ',
+        'font-neo-latina fancy-text-shadow text-6xl md:text-7xl font-extrabold  text-primary uppercase ',
         className
       )}
     >

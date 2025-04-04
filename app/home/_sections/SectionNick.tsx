@@ -75,9 +75,21 @@ const SectionNick = () => {
     // <Section>
     <div
       ref={container}
-      className='grid grid-cols-2 items-start gap-x-15 relative'
+      className='flex flex-col md:grid md:grid-cols-2 md:items-start md:gap-x-15 relative'
       style={{ minHeight: '300vh' }}
     >
+      <div
+        ref={artistRef}
+        className='w-full h-[40vh] backdrop-blur-3xl md:backdrop-blur-none rounded-lg  md:h-screen flex items-start md:items-center justify-center px-4 md:order-1'
+      >
+        <img
+          ref={imageRef}
+          src='/images/artist.png'
+          alt='Nick Demopoulos'
+          className='w-full h-auto translate-y-10 md:translate-y-0  object-contain max-w-[15rem] md:max-w-[30rem]'
+        />
+      </div>
+
       <div ref={textContentRef}>
         <div className='h-screen flex flex-col justify-center'>
           <FancyHeading className='py-8 uppercase'>
@@ -104,18 +116,6 @@ const SectionNick = () => {
             immersive musical experiences.
           </p>
         </div>
-      </div>
-
-      <div
-        ref={artistRef}
-        className='w-full h-screen sticky top-0 flex items-center justify-center px-4'
-      >
-        <img
-          ref={imageRef}
-          src='/images/artist.png'
-          alt='Nick Demopoulos'
-          className='w-full h-auto object-contain max-w-[30rem]'
-        />
       </div>
     </div>
     // </Section>
