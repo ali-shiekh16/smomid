@@ -1,11 +1,13 @@
-import React, { useRef, useMemo, forwardRef, useEffect } from 'react';
+import React, { useRef, useMemo, forwardRef, useEffect, JSX } from 'react';
 import * as THREE from 'three';
 import { useLoader, useThree } from '@react-three/fiber';
 import particleVertexShader from '../_shaders/Vertex';
 import particleFragmentShader from '../_shaders/Fragment';
 import { extractParticlesData } from '../_utils';
 
-interface Props {
+type MeshProps = JSX.IntrinsicElements['points'];
+
+interface Props extends MeshProps {
   texturePath: string;
   onInit?: (mesh: THREE.Points, material: THREE.ShaderMaterial) => void;
   step?: number;
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const ParticleSystem = forwardRef<THREE.Points, Props>(
-  ({ texturePath, onInit, step = 5, particleSize = 1 }, ref) => {
+  ({ texturePath, onInit, step = 5, particleSize = 1, ...props }, ref) => {
     const texture = useLoader(THREE.TextureLoader, texturePath);
     const materialRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -60,7 +62,7 @@ const ParticleSystem = forwardRef<THREE.Points, Props>(
     }, [size]);
 
     return (
-      <points ref={ref} position={[0, 0, -20]}>
+      <points ref={ref} position={[0, 0, -20]} {...props}>
         <bufferGeometry>
           <bufferAttribute
             attach='attributes-position'

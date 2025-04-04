@@ -32,7 +32,7 @@ const SectionIntro = () => {
     (_points: THREE.Points, material: THREE.ShaderMaterial) => {
       if (!material?.uniforms?.dispersion || !meshRef.current) return;
 
-      meshRef.current.position.x = 20;
+      meshRef.current.position.x = window.innerWidth < 768 ? 0 : 20;
 
       material.uniforms.u_opacity.value = 0.0;
 
@@ -95,9 +95,26 @@ const SectionIntro = () => {
     <Section>
       <div
         ref={container}
-        className='grid grid-cols-2 items-start gap-x-15 relative'
+        className='md:grid md:grid-cols-2 md:items-start md:gap-x-15 relative'
         style={{ minHeight: '300vh' }}
       >
+        <div
+          ref={artistRef}
+          className='w-full backdropk h-[40vh] md:h-screen fixed inset-0 canvas-wrapper opacity-0 md:-z-10 order-1'
+        >
+          <Canvas>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <ParticleSystem
+              ref={meshRef}
+              texturePath='/images/guitar.png'
+              onInit={handleParticleInit}
+              particleSize={0.5}
+              step={3}
+              scale={window.innerWidth < 768 ? 1.5 : 1}
+            />
+          </Canvas>
+        </div>
         <div ref={textContentRef} className=''>
           <div className='h-screen flex flex-col justify-center'>
             <FancyHeading className='py-8 uppercase'>
@@ -122,23 +139,6 @@ const SectionIntro = () => {
               applications
             </p>
           </div>
-        </div>
-
-        <div
-          ref={artistRef}
-          className='w-full h-screen fixed inset-0 canvas-wrapper opacity-0 -z-10'
-        >
-          <Canvas>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-            <ParticleSystem
-              ref={meshRef}
-              texturePath='/images/guitar.png'
-              onInit={handleParticleInit}
-              particleSize={0.5}
-              step={3}
-            />
-          </Canvas>
         </div>
       </div>
     </Section>
