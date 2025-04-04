@@ -68,7 +68,7 @@ const SectionContact = () => {
 
         <div className='md:mr-28'>
           <ul className='space-y-10'>
-            <li>
+            {/* <li>
               <Item
                 icon={<MapPinIcon size={35} className='text-white' />}
                 title='Location'
@@ -81,12 +81,12 @@ const SectionContact = () => {
                 title='Phone'
                 text='+90 555 555 55 55'
               />
-            </li>
+            </li> */}
             <li>
               <Item
                 icon={<MailIcon size={35} className='text-white' />}
                 title='Mail'
-                text='stomXdid07x@gmail.com'
+                text='smomid27gmail.com'
               />
             </li>
           </ul>
