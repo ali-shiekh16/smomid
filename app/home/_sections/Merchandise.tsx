@@ -43,8 +43,8 @@ const Merchandise = () => {
 
   return (
     <Section>
-      <div ref={container} className='px-32'>
-        <div className='flex ml-auto mb-10 justify-between border-1 border-white self-end w-1/3'>
+      <div ref={container} className='md:px-32'>
+        <div className='flex ml-auto mb-10 justify-between border-1 border-white self-end md:w-1/3'>
           <div className='text-xl bg-transparent text-white outline-none border-none p-2 '>
             <Link href='/merchandise' className='cursor-pointer'>
               Show All Merchandise
