@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import FancyHeading from '@/app/components/FancyHeading';
 import Section from '@/app/components/Section';
@@ -22,6 +22,14 @@ const SectionIntro = () => {
   const artistRef = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
+    }
+  }, []);
+
   useGSAP(
     () => {
       if (!artistRef.current || !textContentRef.current) return;
@@ -35,8 +43,7 @@ const SectionIntro = () => {
     (_points: THREE.Points, material: THREE.ShaderMaterial) => {
       if (!material?.uniforms?.dispersion || !meshRef.current) return;
 
-      meshRef.current.position.x = (window && window.innerWidth) < 768 ? 0 : 20;
-
+      meshRef.current.position.x = isMobile ? 0 : 20;
       material.uniforms.u_opacity.value = 0.0;
 
       gsap
@@ -114,7 +121,7 @@ const SectionIntro = () => {
               onInit={handleParticleInit}
               particleSize={0.5}
               step={3}
-              scale={(window && window.innerWidth) < 768 ? 1.5 : 1}
+              scale={isMobile ? 1.5 : 1}
             />
           </Canvas>
         </div>
@@ -137,9 +144,9 @@ const SectionIntro = () => {
           </div>
           <div className='h-screen flex flex-col justify-center'>
             <Text>
-              With Smomid a musicians gestures can be remapped to create sound,
+              With Smomid a musician's gestures can be remapped to create sound,
               light, visual animations, control a robotic servo among many other
-              applications
+              applications.
             </Text>
           </div>
         </div>
