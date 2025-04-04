@@ -24,23 +24,29 @@ const PodcastCard = ({
 }: Props) => {
   return (
     <div className='border-1 border-white relative'>
-      <h2 className='font-semibold font-neo-latina text-3xl border-b-1 border-white smd:text-right px-10 md:px-20 py-5'>
+      <h2 className='font-semibold font-neo-latina text-3xl border-b-1 border-white text-center smd:text-right px-10 md:px-20 py-5'>
         {title}
       </h2>
       <div className='smd:flex smd:items-center smd:space-x-5 px-5 md:px-15 py-10 '>
-        <Image
+        {/* <Image
           className='object-cover  h-2/3 smd:absolute smd:top-10 smd:left-15 mb-5 '
           src={image}
           alt='Nick Podcast'
           width='400'
           height='400'
           objectFit='cover'
+        /> */}
+        <Image
+          className='object-cover aspect-square mb-5 smd:w-1/3 w-full'
+          src={image}
+          alt='Nick Podcast'
+          width='500'
+          height='500'
+          objectFit='cover'
         />
-        <div className='smd:h-80 smd:min-w-[400px]'></div>
-        <div className='flex flex-col items-end'>
-          <h3 className='font-neo-latina  text-2xl mb-5 text-right'>
-            {subtitle}
-          </h3>
+        {/* <div className='smd:h-80 smd:min-w-[400px]'></div> */}
+        <div className='flex flex-col smd:items-end items-center text-center smd:text-right'>
+          <h3 className='font-neo-latina  text-2xl mb-5'>{subtitle}</h3>
           {/* <p>{text}</p> */}
           <ButtonOutline className='bg-white '>
             <Link href={link} target='_blank'>
