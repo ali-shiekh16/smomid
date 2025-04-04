@@ -52,7 +52,7 @@ const Navbar = () => {
       <ul className='flex space-x-5'>
         <NavIcon href='https://www.instagram.com/smomid/' icon='instagram' />
         <NavIcon href='https://www.youtube.com/@Smomid' icon='youtube' />
-        {/* <NavIcon href='https://www.facebook.com/Smomid' icon='facebook' /> */}
+        <NavIcon href='https://www.facebook.com/Smomid' icon='facebook' />
         <NavIcon href='https://smomid.bandcamp.com/' icon='bandcamp' />
         <NavIcon
           href='https://open.spotify.com/artist/34tsz5yU9BVkcSjlZvzP2W'
