@@ -137,9 +137,9 @@ const SectionIntro = () => {
           </div>
           <div className='h-screen flex flex-col justify-center'>
             <Text>
-              Unlike traditional guitars, Smomid features touch-sensitive
-              surfaces, LED feedback, and enables real time interaction with
-              interactive software.
+              With Smomid a musician's gestures can be remapped to create sound,
+              light, visual animations and control robotic servos among many
+              other applications.
             </Text>
           </div>
           <div className='h-screen flex flex-col justify-center'>

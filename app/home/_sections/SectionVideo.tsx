@@ -46,8 +46,16 @@ const SectionVideo = () => {
           </button>
         </div>
 
-        <div className='w-full bg-amber-500  h-[70vh] flex justify-center relative'>
-          <Link
+        <div className='w-full  h-[70vh] flex justify-center relative'>
+          <iframe
+            // width='560'
+            // height='315'
+            className='w-full h-full'
+            src='https://www.youtube.com/embed/IHJ9l7iVdnw?si=qLpo1oqT9yFY9N0t'
+            title='YouTube video player'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+          ></iframe>
+          {/* <Link
             href='https://www.youtube.com/watch?v=IHJ9l7iVdnw&ab_channel=Smomid'
             target='_blank'
           >
@@ -59,7 +67,7 @@ const SectionVideo = () => {
             width={2000}
             height={2000}
             className='object-cover w-full h-full rounded-lg'
-          />
+          /> */}
         </div>
       </div>
     </Section>

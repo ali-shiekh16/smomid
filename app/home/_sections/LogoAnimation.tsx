@@ -7,7 +7,6 @@ import ParticleSystem from '../_components/ParticleSystem';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(useGSAP);
 
