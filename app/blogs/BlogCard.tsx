@@ -33,14 +33,10 @@ const BlogCard = ({
       {...props}
     >
       <div>
-        <Image
+        <img
           className={clsx('object-cover w-full rounded-lg', imgStyle)}
-          // src={image || '/images/blogs/placeholder.jpg'}
-          src={'/images/contact-cover.webp'}
+          src={image || '/images/blogs/placeholder.jpg'}
           alt={title}
-          width={500}
-          height={500}
-          objectFit='cover'
         />
         <div className='mt-3'>
           <div className='flex items-center justify-between mb-2'>

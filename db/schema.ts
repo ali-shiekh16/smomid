@@ -41,3 +41,20 @@ export const blogPostsTable = pgTable('blog_posts', {
   tags: text().array(),
   readTime: integer(),
 });
+
+// Events table
+export const eventsTable = pgTable('events', {
+  id: serial('id').primaryKey(),
+  title: varchar({ length: 255 }).notNull(),
+  slug: varchar({ length: 255 }).notNull().unique(),
+  location: text().notNull(),
+  address: text().notNull(),
+  description: text(),
+  flyerImage: varchar({ length: 255 }),
+  eventDate: timestamp(),
+  published: boolean().default(false).notNull(),
+  publishedAt: timestamp(),
+  createdAt: timestamp().defaultNow().notNull(),
+  updatedAt: timestamp().defaultNow().notNull(),
+  authorId: integer().references(() => usersTable.id),
+});

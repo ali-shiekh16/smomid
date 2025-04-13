@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
     // Parse the request body
     const body = await req.json();
     const {
+      id, // Include id for updates
       title,
       slug,
       excerpt,
@@ -32,32 +33,66 @@ export async function POST(req: NextRequest) {
     // Generate slug if not provided
     const finalSlug = slug || slugify(title, { lower: true, strict: true });
 
-    // Insert the blog post into the database
-    const result = await db
-      .insert(blogPostsTable)
-      .values({
-        title,
-        slug: finalSlug,
-        excerpt,
-        content,
-        featuredImage,
-        published: published || false,
-        publishedAt: publishedAt ? new Date(publishedAt) : null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        authorId: authorId || null,
-        tags,
-        readTime: readTime || 5,
-      })
-      .returning({ id: blogPostsTable.id });
+    // Check if this is an update (id is provided) or a new post
+    if (id) {
+      // It's an update
+      const updatedPost = await db
+        .update(blogPostsTable)
+        .set({
+          title,
+          slug: finalSlug,
+          excerpt,
+          content,
+          featuredImage,
+          published: published || false,
+          publishedAt: publishedAt ? new Date(publishedAt) : null,
+          updatedAt: new Date(),
+          authorId: authorId || null,
+          tags,
+          readTime: readTime || 5,
+        })
+        .where(eq(blogPostsTable.id, id))
+        .returning();
 
-    return NextResponse.json(
-      {
-        message: 'Blog post saved successfully',
-        data: result[0],
-      },
-      { status: 201 }
-    );
+      if (updatedPost.length === 0) {
+        return NextResponse.json(
+          { error: 'Blog post not found' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        message: 'Blog post updated successfully',
+        data: updatedPost[0],
+      });
+    } else {
+      // It's a new post
+      const result = await db
+        .insert(blogPostsTable)
+        .values({
+          title,
+          slug: finalSlug,
+          excerpt,
+          content,
+          featuredImage,
+          published: published || false,
+          publishedAt: publishedAt ? new Date(publishedAt) : null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          authorId: authorId || null,
+          tags,
+          readTime: readTime || 5,
+        })
+        .returning({ id: blogPostsTable.id });
+
+      return NextResponse.json(
+        {
+          message: 'Blog post saved successfully',
+          data: result[0],
+        },
+        { status: 201 }
+      );
+    }
   } catch (error) {
     console.error('Error saving blog post:', error);
     return NextResponse.json(
@@ -97,13 +132,16 @@ export async function GET(req: NextRequest) {
     // Otherwise, return all blog posts (published only, unless drafts=true)
     let query = db.select().from(blogPostsTable);
 
+    // Fix for incompatible types - ensure proper query chaining
     if (!showDrafts) {
-      query = query.where(eq(blogPostsTable.published, true));
+      // Using a more explicit assignment to fix type issues
+      const filteredQuery = query.where(eq(blogPostsTable.published, true));
+      // @ts-ignore
+      query = filteredQuery;
     }
 
-    const posts = await query.orderBy(
-      desc(blogPostsTable.publishedAt || blogPostsTable.createdAt)
-    );
+    // Order by updatedAt in descending order (newest first)
+    const posts = await query.orderBy(desc(blogPostsTable.updatedAt));
 
     return NextResponse.json({
       data: posts,
@@ -112,6 +150,44 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json(
       { error: 'Failed to fetch blog posts' },
+      { status: 500 }
+    );
+  }
+}
+
+// Delete a blog post
+export async function DELETE(req: NextRequest) {
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Blog post ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const deletedPost = await db
+      .delete(blogPostsTable)
+      .where(eq(blogPostsTable.id, parseInt(id)))
+      .returning({ id: blogPostsTable.id });
+
+    if (deletedPost.length === 0) {
+      return NextResponse.json(
+        { error: 'Blog post not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      message: 'Blog post deleted successfully',
+      data: deletedPost[0],
+    });
+  } catch (error) {
+    console.error('Error deleting blog post:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete blog post' },
       { status: 500 }
     );
   }

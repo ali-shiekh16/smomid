@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import Section from '../../components/Section';
+import Nblock from '@/app/components/Nblock';
 
 interface BlogPost {
   id: number;
@@ -142,14 +143,14 @@ export default function BlogPostPage() {
 
             {blogPost.featuredImage && (
               <div className='aspect-video relative rounded-lg overflow-hidden'>
-                <Image
-                  // src={blogPost.featuredImage}
-                  src='/images/contact-cover.webp'
+                <img
+                  src={blogPost.featuredImage}
+                  // src='/images/contact-cover.webp'
                   alt={blogPost.title}
                   className='object-cover w-full'
-                  priority
-                  fill
-                  objectFit='cover'
+                  // priority
+                  // fill
+                  // objectFit='cover'
                 />
               </div>
             )}

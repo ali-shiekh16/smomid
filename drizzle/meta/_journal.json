@@ -15,6 +15,13 @@
       "when": 1744505813297,
       "tag": "0001_daily_puma",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744575295538,
+      "tag": "0002_greedy_nekra",
+      "breakpoints": true
     }
   ]
 }
