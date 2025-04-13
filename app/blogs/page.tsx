@@ -9,7 +9,7 @@ const Page = () => {
     <>
       <BlogHero />
       {/* <FeaturedBlogs /> */}
-      {/* <BlogsGrid /> */}
+      <BlogsGrid />
       <BlogFooter />
     </>
   );

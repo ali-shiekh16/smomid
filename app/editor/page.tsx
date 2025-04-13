@@ -1,133 +1,258 @@
 'use client';
 
 import { useState } from 'react';
-import TipTap from '../components/TipTap';
+import { useRouter } from 'next/navigation';
 import AdvancedTipTap from '../components/AdvancedTipTap';
+import slugify from 'slugify';
 
-export default function EditorPage() {
-  const [content, setContent] = useState<string>(
-    '<p>Edit me! This is the basic editor.</p>'
-  );
-  const [advancedContent, setAdvancedContent] = useState<string>(`
-    <h2>Advanced TipTap Editor</h2>
-    <p>This is a more feature-rich editor with additional extensions and styling.</p>
-    <ul>
-      <li>Support for tables</li>
-      <li>Text alignment</li>
-      <li>Links and images</li>
-      <li>And much more!</li>
-    </ul>
-    <blockquote>You can quote text too!</blockquote>
+export default function BlogEditor() {
+  const router = useRouter();
+  const [title, setTitle] = useState<string>('');
+  const [excerpt, setExcerpt] = useState<string>('');
+  const [content, setContent] = useState<string>(`
+    <h2>Start writing your blog post...</h2>
+    <p>This is a full-featured editor with rich text formatting options.</p>
   `);
+  const [featuredImage, setFeaturedImage] = useState<string>('');
+  const [tags, setTags] = useState<string>('');
+  const [readTime, setReadTime] = useState<number>(5);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isPublished, setIsPublished] = useState<boolean>(false);
+  const [saveStatus, setSaveStatus] = useState<{
+    message: string;
+    type: 'success' | 'error' | '';
+  }>({ message: '', type: '' });
+
+  const saveBlogPost = async (publish = false) => {
+    if (!title.trim()) {
+      setSaveStatus({
+        message: 'Please enter a title for your blog post',
+        type: 'error',
+      });
+      return;
+    }
+
+    if (!content.trim()) {
+      setSaveStatus({
+        message: 'Blog post content cannot be empty',
+        type: 'error',
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveStatus({ message: '', type: '' });
+
+    try {
+      const slug = slugify(title, { lower: true, strict: true });
+      const tagArray = tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag);
+      const calculatedReadTime = Math.ceil(content.split(' ').length / 200); // Rough estimate: 200 words per minute
+
+      const response = await fetch('/api/blogs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          slug,
+          excerpt:
+            excerpt ||
+            content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+          content,
+          featuredImage,
+          published: publish,
+          publishedAt: publish ? new Date().toISOString() : null,
+          tags: tagArray,
+          readTime: readTime || calculatedReadTime,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save blog post');
+      }
+
+      const data = await response.json();
+      setSaveStatus({
+        message: publish
+          ? 'Blog post published successfully!'
+          : 'Blog post saved as draft!',
+        type: 'success',
+      });
+
+      // Redirect to the blogs page after a successful publish
+      if (publish) {
+        setTimeout(() => {
+          router.push('/blogs');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Error saving blog post:', error);
+      setSaveStatus({
+        message: 'Error saving blog post. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsSaving(false);
+
+      // Auto-hide the status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ message: '', type: '' });
+      }, 3000);
+    }
+  };
+
+  const calculateReadTime = (html: string) => {
+    const text = html.replace(/<[^>]*>/g, '');
+    const words = text.split(/\s+/).length;
+    return Math.ceil(words / 200); // 200 words per minute
+  };
 
   return (
     <div className='container mx-auto px-4 py-12'>
       <div className='max-w-4xl mx-auto'>
         <h1 className='text-3xl font-bold mb-8 text-center text-gray-900'>
-          TipTap Text Editor Demo
+          Create New Blog Post
         </h1>
 
-        <div className='mb-12'>
-          <div className='bg-white rounded-lg shadow-md overflow-hidden'>
-            <div className='bg-gray-800 text-white py-3 px-4'>
-              <h2 className='text-xl font-semibold'>Basic Editor</h2>
-              <p className='text-sm text-gray-300 mt-1'>
-                Text is formatted as you type
-              </p>
-            </div>
-            <div className='p-4'>
-              <TipTap content={content} onChange={html => setContent(html)} />
-            </div>
+        {saveStatus.message && (
+          <div
+            className={`mb-4 p-4 rounded-md ${
+              saveStatus.type === 'success'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
+            }`}
+          >
+            {saveStatus.message}
           </div>
-        </div>
+        )}
 
-        <div className='mb-12'>
-          <div className='bg-white rounded-lg shadow-md overflow-hidden'>
-            <div className='bg-gray-800 text-white py-3 px-4'>
-              <h2 className='text-xl font-semibold'>Advanced Editor</h2>
-              <p className='text-sm text-gray-300 mt-1'>
-                Note: You need to install additional TipTap extensions to use
-                all features
-              </p>
-            </div>
-            <div className='p-4'>
+        <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+          <div className='mb-4'>
+            <label
+              htmlFor='title'
+              className='block text-sm font-medium text-gray-700 mb-1'
+            >
+              Blog Post Title
+            </label>
+            <input
+              type='text'
+              id='title'
+              value={title}
+              onChange={e => {
+                setTitle(e.target.value);
+                // Auto-update read time when title changes
+                if (content) {
+                  setReadTime(calculateReadTime(content));
+                }
+              }}
+              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              placeholder='Enter a catchy title'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label
+              htmlFor='excerpt'
+              className='block text-sm font-medium text-gray-700 mb-1'
+            >
+              Excerpt (optional)
+            </label>
+            <textarea
+              id='excerpt'
+              value={excerpt}
+              onChange={e => setExcerpt(e.target.value)}
+              rows={2}
+              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              placeholder='A short summary of your post (will be auto-generated if left empty)'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label
+              htmlFor='featuredImage'
+              className='block text-sm font-medium text-gray-700 mb-1'
+            >
+              Featured Image URL
+            </label>
+            <input
+              type='text'
+              id='featuredImage'
+              value={featuredImage}
+              onChange={e => setFeaturedImage(e.target.value)}
+              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              placeholder='https://example.com/image.jpg'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label
+              htmlFor='tags'
+              className='block text-sm font-medium text-gray-700 mb-1'
+            >
+              Tags (comma separated)
+            </label>
+            <input
+              type='text'
+              id='tags'
+              value={tags}
+              onChange={e => setTags(e.target.value)}
+              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              placeholder='music, performance, event'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label
+              htmlFor='readTime'
+              className='block text-sm font-medium text-gray-700 mb-1'
+            >
+              Read Time (minutes)
+            </label>
+            <input
+              type='number'
+              id='readTime'
+              value={readTime}
+              min={1}
+              onChange={e => setReadTime(parseInt(e.target.value) || 5)}
+              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-sm font-medium text-gray-700 mb-1'>
+              Content
+            </label>
+            <div className='border border-gray-300 rounded-md'>
               <AdvancedTipTap
-                content={advancedContent}
-                onChange={html => setAdvancedContent(html)}
-                placeholder='Write something amazing...'
+                content={content}
+                onChange={html => {
+                  setContent(html);
+                  setReadTime(calculateReadTime(html));
+                }}
+                placeholder='Start writing your blog post here...'
               />
             </div>
           </div>
-        </div>
 
-        <div className='bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8'>
-          <div className='flex'>
-            <div className='flex-shrink-0'>
-              <svg
-                className='h-5 w-5 text-yellow-400'
-                viewBox='0 0 20 20'
-                fill='currentColor'
-              >
-                <path
-                  fillRule='evenodd'
-                  d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
-                  clipRule='evenodd'
-                />
-              </svg>
-            </div>
-            <div className='ml-3'>
-              <h3 className='text-sm font-medium text-yellow-800'>
-                Required packages for Advanced Editor
-              </h3>
-              <div className='mt-2 text-sm text-yellow-700'>
-                <p>
-                  To use the advanced editor with all features, install these
-                  packages:
-                </p>
-                <code className='mt-2 block text-xs'>
-                  npm install @tiptap/extension-bubble-menu
-                  @tiptap/extension-floating-menu @tiptap/extension-link
-                  @tiptap/extension-placeholder @tiptap/extension-text-align
-                  @tiptap/extension-underline @tiptap/extension-color
-                  @tiptap/extension-highlight @tiptap/extension-typography
-                  @tiptap/extension-image @tiptap/extension-table
-                  @tiptap/extension-table-row @tiptap/extension-table-cell
-                  @tiptap/extension-table-header
-                </code>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className='bg-white rounded-lg shadow-md overflow-hidden p-6'>
-          <h2 className='text-xl font-bold mb-4'>Editor Features</h2>
-          <div className='grid md:grid-cols-2 gap-4'>
-            <div>
-              <h3 className='font-bold text-lg mb-2'>Basic Editor</h3>
-              <ul className='list-disc pl-5 space-y-1'>
-                <li>Bold, Italic, Code formatting</li>
-                <li>Bullet and Ordered lists</li>
-                <li>Blockquotes</li>
-                <li>Headings</li>
-                <li>Links</li>
-                <li>Undo/Redo</li>
-                <li>Bubble menu for quick formatting</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className='font-bold text-lg mb-2'>Advanced Editor</h3>
-              <ul className='list-disc pl-5 space-y-1'>
-                <li>Everything from Basic Editor</li>
-                <li>Text alignment options</li>
-                <li>Tables with headers</li>
-                <li>Image insertion</li>
-                <li>Floating menu for empty lines</li>
-                <li>Text highlighting</li>
-                <li>Placeholder text</li>
-                <li>Typography improvements</li>
-                <li>Underline and Strikethrough</li>
-              </ul>
-            </div>
+          <div className='flex justify-end space-x-3'>
+            <button
+              onClick={() => saveBlogPost(false)}
+              disabled={isSaving}
+              className='inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
+            >
+              {isSaving ? 'Saving...' : 'Save as Draft'}
+            </button>
+            <button
+              onClick={() => saveBlogPost(true)}
+              disabled={isSaving}
+              className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
+            >
+              {isSaving ? 'Publishing...' : 'Publish Post'}
+            </button>
           </div>
         </div>
       </div>

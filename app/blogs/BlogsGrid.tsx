@@ -1,71 +1,136 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Section from '../components/Section';
-import BlogsGridRow from './BlogsGridRow';
+import BlogCard from './BlogCard';
 import ButtonOutline from '../components/ButtonOutline';
 
-const data = [
-  {
-    date: '22-02-25',
-    image: '/images/blogs/3.png',
-    title: 'Underrated Artists You Should Definitely Listen To on Soundcloud',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/4.jpeg',
-    title: 'Shoutout to My Biggest Fans: Your Support Means Everything!',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/5.jpeg',
-    title: 'My Favorite Cities to Perform In and Why I Love Them',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/6.jpeg',
-    title: 'The Pros and Cons of Being an Independent Artist vs. Signed Artist',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/7.jpeg',
-    title: 'My Studio Setup: A Look at Where the Magic Happens',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/8.jpeg',
-    title: 'How These Iconic Artists Influenced My Music Style',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/9.jpeg',
-    title: 'What If I Never Became a Musician? A Parallel Universe',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/10.jpeg',
-    title: 'Strangest Fan DMs I’ve Ever Received (And How I Responded)',
-  },
-  {
-    date: '22-02-25',
-    image: '/images/blogs/11.jpeg',
-    title: 'What If Famous Artists Swapped Genres? My Wild Predictions',
-  },
-];
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  featuredImage: string | null;
+  publishedAt: string | null;
+  createdAt: string;
+  tags: string[] | null;
+  readTime: number | null;
+}
 
 const BlogsGrid = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const postsPerPage = 9;
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/blogs');
+
+      if (!res.ok) {
+        throw new Error('Failed to fetch blog posts');
+      }
+
+      const data = await res.json();
+      setPosts(data.data || []);
+    } catch (err) {
+      console.error('Error fetching blog posts:', err);
+      setError('Unable to load blog posts. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMorePosts = () => {
+    setPage(prev => prev + 1);
+    // In a real implementation with pagination API, you would fetch more posts here
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  };
+
+  if (loading && posts.length === 0) {
+    return (
+      <Section>
+        <div className='flex justify-center items-center py-20'>
+          <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white'></div>
+        </div>
+      </Section>
+    );
+  }
+
+  if (error) {
+    return (
+      <Section>
+        <div className='text-center py-20'>
+          <p className='text-red-500'>{error}</p>
+          <button
+            onClick={fetchPosts}
+            className='mt-4 bg-white text-black px-6 py-2 rounded hover:bg-gray-200'
+          >
+            Try Again
+          </button>
+        </div>
+      </Section>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Section>
+        <div className='text-center py-20'>
+          <h3 className='text-2xl font-medium'>No blog posts yet</h3>
+          <p className='mt-2 text-gray-600'>Check back later for updates!</p>
+        </div>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <div className='w-full h-[1px] bg-white mb-20'></div>
-      <div className='space-y-10'>
-        <BlogsGridRow items={data.slice(0, 3)} />
-        <BlogsGridRow items={data.slice(3, 6)} />
-        <BlogsGridRow items={data.slice(6)} />
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        {posts.map(post => (
+          <BlogCard
+            key={post.id}
+            title={post.title}
+            date={formatDate(post.publishedAt || post.createdAt)}
+            image={post.featuredImage || '/images/blogs/placeholder.jpg'}
+            slug={post.slug}
+            excerpt={post.excerpt || ''}
+            readTime={post.readTime || 5}
+            tags={post.tags || []}
+            className='h-full'
+            imgStyle='h-64'
+          />
+        ))}
       </div>
 
-      <div className='flex justify-center mt-15'>
-        <ButtonOutline className='w-fit rounded-none px-6 py-3 bg-black/15'>
-          <span className='text-2xl'>Show More</span>
-        </ButtonOutline>
-      </div>
+      {/* {hasMore && (
+        <div className='flex justify-center mt-16'>
+          <ButtonOutline
+            className='w-fit rounded-none px-6 py-3 bg-black/15'
+            onClick={loadMorePosts}
+          >
+            <span className='text-2xl'>
+              {loading ? 'Loading...' : 'Show More'}
+            </span>
+          </ButtonOutline>
+        </div>
+      )} */}
     </Section>
   );
 };

@@ -13,15 +13,15 @@ const BlogHero = () => {
             tips, and updates on his latest tracks and shows.
           </p>
         </div>
-        <div className='flex space-x-5 items-end justify-end'>
-          {/* <ButtonOutline>Insights</ButtonOutline>
+        {/* <div className='flex space-x-5 items-end justify-end'> */}
+        {/* <ButtonOutline>Insights</ButtonOutline>
         <ButtonOutline>BTS</ButtonOutline>
         <ButtonOutline>Updates</ButtonOutline>
         <ButtonOutline>Reviews</ButtonOutline> */}
-        </div>
+        {/* </div> */}
       </div>
 
-      <p className='my-20 text-center text-3xl'>To be release soon...</p>
+      {/* <p className='my-20 text-center text-3xl'>To be release soon...</p> */}
     </Section>
   );
 };

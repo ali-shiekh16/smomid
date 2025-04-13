@@ -65,34 +65,34 @@ const CustomLinkExtension = Extension.create({
   onCreate() {
     // Add click handler to the editor DOM element
     if (this.editor.options.element) {
-      this.editor.options.element.addEventListener(
-        'click',
-        this.handleClick.bind(this)
-      );
+      const handleClick = (event: Event) => {
+        // Check if clicked element is a link
+        const target = event.target as HTMLElement;
+        const anchor = target.closest('a');
+
+        if (anchor) {
+          const href = anchor.getAttribute('href');
+          if (href) {
+            event.preventDefault();
+            window.open(href, '_blank', 'noopener,noreferrer');
+          }
+        }
+      };
+
+      this.editor.options.element.addEventListener('click', handleClick);
+
+      // Store the handler reference for cleanup
+      this.storage.handleClick = handleClick;
     }
   },
 
   onDestroy() {
     // Remove event listener when component unmounts
-    if (this.editor.options.element) {
+    if (this.editor.options.element && this.storage.handleClick) {
       this.editor.options.element.removeEventListener(
         'click',
-        this.handleClick.bind(this)
+        this.storage.handleClick
       );
-    }
-  },
-
-  handleClick(event: MouseEvent) {
-    // Check if clicked element is a link
-    const target = event.target as HTMLElement;
-    const anchor = target.closest('a');
-
-    if (anchor) {
-      const href = anchor.getAttribute('href');
-      if (href) {
-        event.preventDefault();
-        window.open(href, '_blank', 'noopener,noreferrer');
-      }
     }
   },
 });
