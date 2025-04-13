@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AdvancedTipTap from '../components/AdvancedTipTap';
 import CloudinaryUploader from '../components/CloudinaryUploader';
@@ -38,7 +38,8 @@ interface Event {
   updatedAt: string;
 }
 
-export default function EditorPage() {
+// Create a separate client component that uses useSearchParams
+function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editSlug = searchParams.get('slug');
@@ -1116,5 +1117,21 @@ export default function EditorPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main component that wraps the EditorContent in a Suspense boundary
+export default function EditorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='container mx-auto px-4 py-12 flex justify-center items-center'>
+          <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent'></div>
+          <p className='ml-3 text-white'>Loading editor...</p>
+        </div>
+      }
+    >
+      <EditorContent />
+    </Suspense>
   );
 }

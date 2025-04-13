@@ -60,7 +60,7 @@ export default function RecentConcerts() {
   if (loading) {
     return (
       <Section className='py-16'>
-        <HeadingUnderlined text='Recent Concerts' />
+        <HeadingUnderlined>Recent Concerts</HeadingUnderlined>
         <div className='flex justify-center items-center py-20'>
           <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white'></div>
         </div>
@@ -71,7 +71,7 @@ export default function RecentConcerts() {
   if (error) {
     return (
       <Section className='py-16'>
-        <HeadingUnderlined text='Recent Concerts' />
+        <HeadingUnderlined>Recent Concerts</HeadingUnderlined>
         <div className='text-center py-10'>
           <p className='text-red-500'>{error}</p>
         </div>
@@ -82,7 +82,7 @@ export default function RecentConcerts() {
   if (pastEvents.length === 0) {
     return (
       <Section className='py-16'>
-        <HeadingUnderlined text='Recent Concerts' />
+        <HeadingUnderlined>Recent Concerts</HeadingUnderlined>
         <div className='text-center py-10'>
           <p>No past events to display.</p>
         </div>
@@ -92,7 +92,7 @@ export default function RecentConcerts() {
 
   return (
     <Section className='py-16'>
-      <HeadingUnderlined text='Recent Concerts' />
+      <HeadingUnderlined>Recent Concerts</HeadingUnderlined>
       <div className='mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
         {pastEvents.map(event => (
           <ConcertWall

@@ -14,6 +14,7 @@ const FeaturedBlogs = () => {
           date='22-02-25'
           image='/images/blogs/1.png'
           title='A Day in My Life: What It’s Like to Be a Music Artist in United States Of America'
+          slug='day-in-my-life-as-music-artist'
         />
 
         <div className='flex'>
@@ -24,6 +25,7 @@ const FeaturedBlogs = () => {
             date='22-02-25'
             image='/images/blogs/2.png'
             title='The Best Ways to Promote Your Music as an Independent Artist'
+            slug='best-ways-to-promote-music-as-independent-artist'
           />
         </div>
       </div>

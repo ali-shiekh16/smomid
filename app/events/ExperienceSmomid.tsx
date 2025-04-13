@@ -8,7 +8,7 @@ export default function ExperienceSmomid() {
   return (
     <Section className='py-16 bg-gradient-to-b from-black to-neutral-900'>
       <div className='max-w-4xl mx-auto text-center'>
-        <HeadingGradient text='Experience Smomid Live' />
+        <HeadingGradient>Experience Smomid Live</HeadingGradient>
 
         <p className='mt-6 text-xl'>
           Smomid delivers a unique blend of electronic music and visual art
