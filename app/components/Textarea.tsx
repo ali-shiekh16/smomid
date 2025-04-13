@@ -12,7 +12,7 @@ const Textarea = ({ label, htmlFor, ...props }: Props) => {
         {label}
       </label>
       <textarea
-        className='outline-0 w-full h-full'
+        className='outline-0 w-full h-full text-gray-900'
         name={htmlFor}
         id={htmlFor}
         {...props}

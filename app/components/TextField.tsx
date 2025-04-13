@@ -12,7 +12,7 @@ const TextField = ({ label, htmlFor, ...props }: Props) => {
         {label}
       </label>
       <input
-        className='flex-1 outline-0'
+        className='flex-1 outline-0 text-gray-900'
         name={htmlFor}
         id={htmlFor}
         {...props}

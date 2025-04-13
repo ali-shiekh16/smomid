@@ -114,7 +114,7 @@ export default function BlogEditor() {
   return (
     <div className='container mx-auto px-4 py-12'>
       <div className='max-w-4xl mx-auto'>
-        <h1 className='text-3xl font-bold mb-8 text-center text-gray-900'>
+        <h1 className='text-3xl font-bold mb-8 text-center '>
           Create New Blog Post
         </h1>
 
@@ -149,7 +149,7 @@ export default function BlogEditor() {
                   setReadTime(calculateReadTime(content));
                 }
               }}
-              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
               placeholder='Enter a catchy title'
             />
           </div>
@@ -166,7 +166,7 @@ export default function BlogEditor() {
               value={excerpt}
               onChange={e => setExcerpt(e.target.value)}
               rows={2}
-              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
               placeholder='A short summary of your post (will be auto-generated if left empty)'
             />
           </div>
@@ -183,7 +183,7 @@ export default function BlogEditor() {
               id='featuredImage'
               value={featuredImage}
               onChange={e => setFeaturedImage(e.target.value)}
-              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
               placeholder='https://example.com/image.jpg'
             />
           </div>
@@ -200,7 +200,7 @@ export default function BlogEditor() {
               id='tags'
               value={tags}
               onChange={e => setTags(e.target.value)}
-              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
               placeholder='music, performance, event'
             />
           </div>
@@ -218,7 +218,7 @@ export default function BlogEditor() {
               value={readTime}
               min={1}
               onChange={e => setReadTime(parseInt(e.target.value) || 5)}
-              className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
             />
           </div>
 
