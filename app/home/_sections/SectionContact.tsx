@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { useHomeStore } from '../_store';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,7 +62,9 @@ const SectionContact = () => {
               className='text-xl bg-transparent text-white outline-none border-none p-2'
             />
             <button className='bg-white text-black px-4'>
-              <ArrowRight size={25} />
+              <Link href='mailto:nick@smomid.com'>
+                <ArrowRight size={25} />
+              </Link>
             </button>
           </div>
         </div>
