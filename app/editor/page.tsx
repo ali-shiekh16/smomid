@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import AdvancedTipTap from '../components/AdvancedTipTap';
 import CloudinaryUploader from '../components/CloudinaryUploader';
 import slugify from 'slugify';
+import { useAuth } from '../context/AuthContext';
 
 // Interface for blog post type
 interface BlogPost {
@@ -48,6 +49,14 @@ function EditorContent() {
   const [editorType, setEditorType] = useState<'blog' | 'event'>(
     type === 'event' ? 'event' : 'blog'
   );
+  const { isAuthenticated, logout, loading } = useAuth();
+
+  // Auth check
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, loading, router]);
 
   // Blog post form state
   const [title, setTitle] = useState<string>('');
@@ -520,9 +529,37 @@ function EditorContent() {
       (showDrafts && !event.published) || (showPublished && event.published)
   );
 
+  // Render a loading state while checking authentication
+  if (loading) {
+    return (
+      <div className='container mx-auto px-4 py-12 flex justify-center items-center'>
+        <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent'></div>
+        <p className='ml-3 text-white'>Checking authentication...</p>
+      </div>
+    );
+  }
+
+  // If not authenticated and not loading, don't render anything (redirect will happen)
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className='container mx-auto px-4 py-12'>
       <div className='max-w-4xl mx-auto'>
+        {/* Logout button */}
+        <div className='flex justify-end mb-6'>
+          <button
+            onClick={() => {
+              logout();
+              router.push('/login');
+            }}
+            className='px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition'
+          >
+            Logout
+          </button>
+        </div>
+
         {/* Content Type Tabs */}
         <div className='flex justify-between items-center mb-8'>
           <div className='flex space-x-2'>
