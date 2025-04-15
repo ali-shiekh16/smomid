@@ -39,6 +39,33 @@ interface Event {
   updatedAt: string;
 }
 
+// Interface for email subscriber
+interface EmailSubscriber {
+  id: number;
+  email: string;
+  name: string | null;
+  source: string | null;
+  preferences: string[] | null;
+  isActive: boolean;
+  subscribedAt: string;
+  unsubscribedAt: string | null;
+  lastEmailSentAt: string | null;
+}
+
+// Interface for inquiry
+interface Inquiry {
+  id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string | null;
+  message: string;
+  inquiryType: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Create a separate client component that uses useSearchParams
 function EditorContent() {
   const router = useRouter();
@@ -46,10 +73,19 @@ function EditorContent() {
   const editSlug = searchParams.get('slug');
   const type = searchParams.get('type') || 'blog'; // Default to blog if not specified
   const [mode, setMode] = useState<'create' | 'edit' | 'manage'>('create');
-  const [editorType, setEditorType] = useState<'blog' | 'event'>(
-    type === 'event' ? 'event' : 'blog'
+  const [editorType, setEditorType] = useState<'blog' | 'event' | 'admin'>(
+    type === 'event' ? 'event' : type === 'admin' ? 'admin' : 'blog'
   );
   const { isAuthenticated, logout, loading } = useAuth();
+
+  // Admin panel state
+  const [emailSubscribers, setEmailSubscribers] = useState<EmailSubscriber[]>(
+    []
+  );
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [isLoadingSubscribers, setIsLoadingSubscribers] =
+    useState<boolean>(false);
+  const [isLoadingInquiries, setIsLoadingInquiries] = useState<boolean>(false);
 
   // Auth check
   useEffect(() => {
@@ -529,6 +565,139 @@ function EditorContent() {
       (showDrafts && !event.published) || (showPublished && event.published)
   );
 
+  // Fetch email list subscribers
+  const fetchEmailSubscribers = async () => {
+    setIsLoadingSubscribers(true);
+    try {
+      const response = await fetch('/api/email-list');
+      if (!response.ok) {
+        throw new Error('Failed to fetch email subscribers');
+      }
+      const data = await response.json();
+      setEmailSubscribers(data.data);
+    } catch (error) {
+      console.error('Error fetching email subscribers:', error);
+      setSaveStatus({
+        message: 'Error fetching email subscribers. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsLoadingSubscribers(false);
+    }
+  };
+
+  // Fetch inquiries
+  const fetchInquiries = async () => {
+    setIsLoadingInquiries(true);
+    try {
+      const response = await fetch('/api/inquiries');
+      if (!response.ok) {
+        throw new Error('Failed to fetch inquiries');
+      }
+      const data = await response.json();
+      setInquiries(data.data);
+    } catch (error) {
+      console.error('Error fetching inquiries:', error);
+      setSaveStatus({
+        message: 'Error fetching inquiries. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsLoadingInquiries(false);
+    }
+  };
+
+  // Mark inquiry as read/unread
+  const updateInquiryStatus = async (id: number, status: string) => {
+    try {
+      // This is just a placeholder. You'll need to implement the PUT endpoint in the inquiries API
+      const response = await fetch(`/api/inquiries/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update inquiry status');
+      }
+
+      // Refresh inquiries after update
+      fetchInquiries();
+
+      setSaveStatus({
+        message: `Inquiry status updated to ${status}`,
+        type: 'success',
+      });
+    } catch (error) {
+      console.error('Error updating inquiry status:', error);
+      setSaveStatus({
+        message: 'Error updating inquiry status. Please try again.',
+        type: 'error',
+      });
+    }
+  };
+
+  // Export email subscribers to CSV
+  const exportEmailSubscribersToCSV = () => {
+    if (emailSubscribers.length === 0) {
+      setSaveStatus({
+        message: 'No email subscribers to export',
+        type: 'error',
+      });
+      return;
+    }
+
+    // Create CSV header row
+    const headers = [
+      'ID',
+      'Email',
+      'Name',
+      'Source',
+      'Active',
+      'Subscribed Date',
+    ];
+
+    // Map subscribers to CSV rows
+    const csvRows = emailSubscribers.map(subscriber => [
+      subscriber.id,
+      subscriber.email,
+      subscriber.name || '',
+      subscriber.source || '',
+      subscriber.isActive ? 'Yes' : 'No',
+      new Date(subscriber.subscribedAt).toLocaleDateString(),
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(','),
+      ...csvRows.map(row => row.join(',')),
+    ].join('\n');
+
+    // Create blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute(
+      'download',
+      `email_subscribers_${new Date().toISOString().slice(0, 10)}.csv`
+    );
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Fetch data when switching to admin panel
+  useEffect(() => {
+    if (editorType === 'admin') {
+      fetchEmailSubscribers();
+      fetchInquiries();
+    }
+  }, [editorType]);
+
   // Render a loading state while checking authentication
   if (loading) {
     return (
@@ -583,38 +752,53 @@ function EditorContent() {
             >
               Events
             </button>
+            <button
+              onClick={() => {
+                setEditorType('admin');
+                setMode('manage');
+              }}
+              className={`px-4 py-2 rounded-md ${
+                editorType === 'admin'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Inquiries / Email list
+            </button>
           </div>
 
           {/* Navigation tabs */}
-          <div className='flex space-x-2'>
-            <button
-              onClick={() => setMode('create')}
-              className={`px-4 py-2 rounded-md ${
-                mode === 'create'
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {editorType === 'blog' ? 'New Post' : 'New Event'}
-            </button>
-            <button
-              onClick={() => {
-                setMode('manage');
-                if (editorType === 'blog') {
-                  fetchBlogPosts();
-                } else {
-                  fetchEvents();
-                }
-              }}
-              className={`px-4 py-2 rounded-md ${
-                mode === 'manage'
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              Manage {editorType === 'blog' ? 'Posts' : 'Events'}
-            </button>
-          </div>
+          {editorType !== 'admin' && (
+            <div className='flex space-x-2'>
+              <button
+                onClick={() => setMode('create')}
+                className={`px-4 py-2 rounded-md ${
+                  mode === 'create'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {editorType === 'blog' ? 'New Post' : 'New Event'}
+              </button>
+              <button
+                onClick={() => {
+                  setMode('manage');
+                  if (editorType === 'blog') {
+                    fetchBlogPosts();
+                  } else {
+                    fetchEvents();
+                  }
+                }}
+                className={`px-4 py-2 rounded-md ${
+                  mode === 'manage'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Manage {editorType === 'blog' ? 'Posts' : 'Events'}
+              </button>
+            </div>
+          )}
         </div>
 
         {saveStatus.message && (
@@ -626,6 +810,133 @@ function EditorContent() {
             }`}
           >
             {saveStatus.message}
+          </div>
+        )}
+
+        {/* Admin Panel - Email List Subscribers */}
+        {editorType === 'admin' && (
+          <div>
+            <h2 className='text-2xl font-bold mb-4'>Email List</h2>
+
+            {/* Email List Section */}
+            <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+              <div className='flex justify-between items-center mb-4'>
+                <h3 className='text-xl font-semibold'>
+                  Email List Subscribers
+                </h3>
+              </div>
+
+              {isLoadingSubscribers ? (
+                <div className='text-center py-10'>
+                  <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent'></div>
+                  <p className='mt-3'>Loading subscribers...</p>
+                </div>
+              ) : emailSubscribers.length === 0 ? (
+                <div className='text-center py-10 text-gray-500'>
+                  No email subscribers found.
+                </div>
+              ) : (
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-gray-200'>
+                    <thead className='bg-gray-50'>
+                      <tr>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Email
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Name
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Subscribed Date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {emailSubscribers.map(subscriber => (
+                        <tr key={subscriber.id}>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                            {subscriber.email}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                            {subscriber.name || '-'}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                            {new Date(
+                              subscriber.subscribedAt
+                            ).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Inquiries Section */}
+
+            <div className='flex justify-between items-center mb-4'>
+              <h3 className='text-2xl font-semibold'>Inquiries</h3>
+            </div>
+            <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+              {isLoadingInquiries ? (
+                <div className='text-center py-10'>
+                  <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent'></div>
+                  <p className='mt-3'>Loading inquiries...</p>
+                </div>
+              ) : inquiries.length === 0 ? (
+                <div className='text-center py-10 text-gray-500'>
+                  No inquiries found.
+                </div>
+              ) : (
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-gray-200'>
+                    <thead className='bg-gray-50'>
+                      <tr>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Name
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Email
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Phone
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Date
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Message
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {inquiries.map(inquiry => (
+                        <tr key={inquiry.id}>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                            {inquiry.name}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                            {inquiry.email}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                            {inquiry.phone || '-'}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                            {new Date(inquiry.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className='px-6 py-4 text-sm text-gray-500 max-w-xs'>
+                            <div className='max-h-20 overflow-y-auto'>
+                              {inquiry.message}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

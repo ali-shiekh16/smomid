@@ -58,3 +58,44 @@ export const eventsTable = pgTable('events', {
   updatedAt: timestamp().defaultNow().notNull(),
   authorId: integer().references(() => usersTable.id),
 });
+
+// Form submissions table
+export const formSubmissionsTable = pgTable('form_submissions', {
+  id: serial('id').primaryKey(),
+  name: varchar({ length: 255 }).notNull(),
+  email: varchar({ length: 255 }).notNull(),
+  subject: varchar({ length: 255 }),
+  message: text().notNull(),
+  phone: varchar({ length: 20 }),
+  formType: varchar({ length: 50 }).default('contact').notNull(), // 'contact', 'fan', 'corporate', etc.
+  status: varchar({ length: 20 }).default('unread').notNull(), // 'unread', 'read', 'responded'
+  createdAt: timestamp().defaultNow().notNull(),
+  updatedAt: timestamp().defaultNow().notNull(),
+});
+
+// Inquiries table
+export const inquiriesTable = pgTable('inquiries', {
+  id: serial('id').primaryKey(),
+  name: varchar({ length: 255 }).notNull(),
+  email: varchar({ length: 255 }).notNull(),
+  phone: varchar({ length: 20 }),
+  subject: varchar({ length: 255 }),
+  message: text().notNull(),
+  inquiryType: varchar({ length: 50 }).default('general').notNull(), // 'general', 'corporate', 'performance', etc.
+  status: varchar({ length: 20 }).default('pending').notNull(), // 'pending', 'in-progress', 'completed'
+  createdAt: timestamp().defaultNow().notNull(),
+  updatedAt: timestamp().defaultNow().notNull(),
+});
+
+// Email list subscribers table
+export const emailListTable = pgTable('email_list', {
+  id: serial('id').primaryKey(),
+  email: varchar({ length: 255 }).notNull().unique(),
+  name: varchar({ length: 255 }),
+  source: varchar({ length: 100 }), // Where they subscribed from
+  preferences: text().array(), // Array of content preferences
+  isActive: boolean().default(true).notNull(),
+  subscribedAt: timestamp().defaultNow().notNull(),
+  unsubscribedAt: timestamp(),
+  lastEmailSentAt: timestamp(),
+});

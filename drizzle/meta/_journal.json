@@ -22,6 +22,13 @@
       "when": 1744575295538,
       "tag": "0002_greedy_nekra",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744742381231,
+      "tag": "0003_condemned_kree",
+      "breakpoints": true
     }
   ]
 }
