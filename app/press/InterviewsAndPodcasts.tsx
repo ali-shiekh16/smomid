@@ -9,18 +9,20 @@ const InterviewsAndPodcasts = () => {
     <Section>
       <div className='space-y-20'>
         <HeadingPill align='center'>Press</HeadingPill>
-        {data.map((podcast, index) => (
-          <PodcastCard
-            key={index}
-            title={podcast.title}
-            subtitle={podcast.subtitle}
-            text={podcast.text}
-            image={podcast.image}
-            date={podcast.date}
-            btnText={podcast.btnText}
-            link={podcast.link}
-          />
-        ))}
+        <div className='md:grid md:grid-cols-3 md:gap-5'>
+          {data.map((podcast, index) => (
+            <PodcastCard
+              key={index}
+              title={podcast.title}
+              subtitle={podcast.subtitle}
+              text={podcast.text}
+              image={podcast.image}
+              date={podcast.date}
+              btnText={podcast.btnText}
+              link={podcast.link}
+            />
+          ))}
+        </div>
       </div>
     </Section>
   );
