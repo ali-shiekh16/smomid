@@ -97,7 +97,7 @@ export default function EventsList() {
 
         return (
           <div
-            className='flex flex-col md:flex-row justify-between items-center mb-16 gap-6'
+            className='flex flex-col md:flex-row justify-between items-start mb-16 gap-8'
             key={event.id}
           >
             {/* Event Flyer Column */}
@@ -112,21 +112,18 @@ export default function EventsList() {
             </div>
 
             {/* Event Details Column */}
-            <div className='w-full md:w-2/3 flex flex-col md:flex-row justify-between items-center'>
-              <EventDate
-                month={eventDate.month}
-                date={eventDate.date}
-                state={event.location}
-                city={event.address}
-              />
-
-              <div className='mb-6 md:mb-0 mt-6 md:mt-0'>
-                {event.slug && (
-                  <Link href={`#`} passHref>
-                    <ButtonOutline className='hover:bg-white hover:text-black'>
-                      DETAILS
-                    </ButtonOutline>
-                  </Link>
+            <div className='w-full md:w-2/3'>
+              <div className='flex flex-col gap-4 w-full'>
+                <EventDate
+                  month={eventDate.month}
+                  date={eventDate.date}
+                  state={event.location}
+                  city={event.address}
+                />
+                {event.description && (
+                  <p className='text-gray-200 font-electrolize text-base leading-relaxed max-w-prose'>
+                    {event.description}
+                  </p>
                 )}
               </div>
             </div>

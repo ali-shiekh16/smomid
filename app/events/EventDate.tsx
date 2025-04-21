@@ -17,14 +17,14 @@ const EventDate = ({
   ...props
 }: Props) => {
   return (
-    <div className={clsx('flex items-center space-x-5', className)} {...props}>
-      <p className='bg-black text-lg text-center leading-5 p-5 rounded-2xl'>
+    <div className={clsx('flex items-center space-x-5 ', className)} {...props}>
+      <p className='bg-black text-lg text-center leading-5 p-5 rounded-2xl '>
         {month} <br />
-        <span className='text-2xl font-electrolize'>{date}</span>
+        <span className='text-2xl font-electrolize '>{date}</span>
       </p>
-      <p className='text-3xl leading-5'>
+      <p className='text-3xl leading-8  font-electrolize'>
         {state} <br />
-        <span className='text-lg font-electrolize'>{city}</span>
+        <span className='text-lg leading-0 font-electrolize'>{city}</span>
       </p>
     </div>
   );
