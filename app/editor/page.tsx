@@ -733,7 +733,20 @@ function EditorContent() {
         <div className='flex justify-between items-center mb-8'>
           <div className='flex space-x-2'>
             <button
-              onClick={() => setEditorType('blog')}
+              onClick={() => {
+                setEditorType('blog');
+                // Clear event form state when switching to blog
+                if (mode === 'edit') {
+                  setMode('create');
+                  setCurrentEventId(null);
+                  setEventTitle('');
+                  setEventLocation('');
+                  setEventAddress('');
+                  setEventDescription('');
+                  setEventFlyerImage('');
+                  setEventDate('');
+                }
+              }}
               className={`px-4 py-2 rounded-md ${
                 editorType === 'blog'
                   ? 'bg-indigo-600 text-white'
@@ -743,7 +756,20 @@ function EditorContent() {
               Blog Posts
             </button>
             <button
-              onClick={() => setEditorType('event')}
+              onClick={() => {
+                setEditorType('event');
+                // Clear event form state when switching to events if in edit mode
+                if (mode === 'edit') {
+                  setMode('create');
+                  setCurrentEventId(null);
+                  setEventTitle('');
+                  setEventLocation('');
+                  setEventAddress('');
+                  setEventDescription('');
+                  setEventFlyerImage('');
+                  setEventDate('');
+                }
+              }}
               className={`px-4 py-2 rounded-md ${
                 editorType === 'event'
                   ? 'bg-indigo-600 text-white'
@@ -771,7 +797,30 @@ function EditorContent() {
           {editorType !== 'admin' && (
             <div className='flex space-x-2'>
               <button
-                onClick={() => setMode('create')}
+                onClick={() => {
+                  setMode('create');
+                  // Reset form state when creating a new event
+                  if (editorType === 'event') {
+                    setCurrentEventId(null);
+                    setEventTitle('');
+                    setEventLocation('');
+                    setEventAddress('');
+                    setEventDescription('');
+                    setEventFlyerImage('');
+                    setEventDate('');
+                  } else if (editorType === 'blog') {
+                    setCurrentPostId(null);
+                    setTitle('');
+                    setExcerpt('');
+                    setContent(`
+                      <h2>Start writing your blog post...</h2>
+                      <p>This is a full-featured editor with rich text formatting options.</p>
+                    `);
+                    setFeaturedImage('');
+                    setTags('');
+                    setReadTime(5);
+                  }
+                }}
                 className={`px-4 py-2 rounded-md ${
                   mode === 'create'
                     ? 'bg-indigo-600 text-white'
