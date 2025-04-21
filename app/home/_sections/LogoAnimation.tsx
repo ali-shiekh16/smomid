@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { useEffect, useRef, useState } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import Nblock from '@/app/components/Nblock';
 import { useHomeStore } from '../_store';
 import ParticleSystem from '../_components/ParticleSystem';
@@ -14,6 +14,22 @@ const LogoAnimation = () => {
   const setActiveIndex = useHomeStore(state => state.setActiveIndex);
   const meshRef = useRef<THREE.Points>(null);
   const container = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+
+      handleResize(); // Set initial value
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, []);
 
   const { contextSafe } = useGSAP({ scope: container });
 
@@ -68,13 +84,14 @@ const LogoAnimation = () => {
   return (
     <Nblock>
       <div ref={container} className='h-[200vh] w-full relative'>
-        <div className='fixed h-screen w-full canvas-wrapper -z-10'>
+        <div className='fixed border-2  h-screen w-full canvas-wrapper -z-10'>
           <Canvas>
             <ParticleSystem
               ref={meshRef}
               texturePath='/images/logo.png'
               onInit={handleParticleInit}
               step={3}
+              scale={isMobile ? 0.85 : 1}
             />
           </Canvas>
         </div>
