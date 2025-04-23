@@ -25,6 +25,7 @@ import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import Youtube from '@tiptap/extension-youtube';
+import CloudinaryUploader from './CloudinaryUploader';
 import {
   Bold,
   Italic,
@@ -232,15 +233,22 @@ const AdvancedTipTap: React.FC<AdvancedTipTapProps> = ({
     if (!editor) return;
 
     if (showImageInput) {
-      if (imageUrl) {
-        editor.chain().focus().setImage({ src: imageUrl }).run();
-      }
       setShowImageInput(false);
       setImageUrl('');
     } else {
       setShowImageInput(true);
     }
-  }, [editor, imageUrl, showImageInput]);
+  }, [editor, showImageInput]);
+
+  const handleImageUpload = useCallback(
+    (url: string) => {
+      if (!editor) return;
+
+      editor.chain().focus().setImage({ src: url }).run();
+      setShowImageInput(false);
+    },
+    [editor]
+  );
 
   const addYoutube = useCallback(() => {
     if (!editor) return;
@@ -563,19 +571,7 @@ const AdvancedTipTap: React.FC<AdvancedTipTapProps> = ({
 
           {showImageInput && (
             <div className='p-2 bg-gray-200 border-b flex items-center gap-2'>
-              <input
-                type='text'
-                value={imageUrl}
-                onChange={e => setImageUrl(e.target.value)}
-                placeholder='https://example.com/image.jpg'
-                className='flex-1 text-sm border rounded px-2 py-1 text-gray-900'
-              />
-              <button
-                onClick={addImage}
-                className='px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
-              >
-                Add Image
-              </button>
+              <CloudinaryUploader onImageUploaded={handleImageUpload} />
             </div>
           )}
 

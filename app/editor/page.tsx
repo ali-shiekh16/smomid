@@ -1283,16 +1283,17 @@ function EditorContent() {
                 htmlFor='featuredImage'
                 className='block text-sm font-medium text-gray-700 mb-1'
               >
-                Featured Image URL
+                Featured Image
               </label>
-              <input
-                type='text'
-                id='featuredImage'
-                value={featuredImage}
-                onChange={e => setFeaturedImage(e.target.value)}
-                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
-                placeholder='https://example.com/image.jpg'
+              <CloudinaryUploader
+                currentImage={featuredImage}
+                onImageUploaded={url => setFeaturedImage(url)}
               />
+              <p className='text-xs text-gray-500 mt-2'>
+                Choose a high-quality image for your blog post thumbnail. This
+                image will be displayed in the blog listing and at the top of
+                your post.
+              </p>
             </div>
 
             <div className='mb-4'>
