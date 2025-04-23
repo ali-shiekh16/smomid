@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import Section from '../components/Section';
 import EventDate from './EventDate';
-import ButtonOutline from '../components/ButtonOutline';
-import Link from 'next/link';
 
 type Event = {
   id: number;
@@ -27,7 +25,9 @@ export default function EventsList() {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/events?orderBy=eventDate&order=asc');
+        const response = await fetch(
+          '/api/events?orderBy=eventDate&order=desc'
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }
@@ -93,8 +93,6 @@ export default function EventsList() {
     <Section className='font-neo-latina'>
       {events.map(event => {
         const eventDate = formatEventDate(event.eventDate);
-        console.log(event);
-
         return (
           <div
             className='flex flex-col md:flex-row justify-between items-start mb-16 gap-8'
@@ -106,7 +104,7 @@ export default function EventsList() {
                 <img
                   src={event.flyerImage || '/images/event-placeholder.webp'}
                   alt={`${event.title} flyer`}
-                  className='object-cover w-full h-full'
+                  className='object-contain w-full h-full'
                 />
               </div>
             </div>
@@ -121,9 +119,10 @@ export default function EventsList() {
                   city={event.address}
                 />
                 {event.description && (
-                  <p className='text-gray-200 font-electrolize text-base leading-relaxed max-w-prose'>
-                    {event.description}
-                  </p>
+                  <div
+                    className='prose prose-lg prose-invert max-w-prose font-electrolize [&_a]:text-white [&_a:hover]:text-gray-300'
+                    dangerouslySetInnerHTML={{ __html: event.description }}
+                  />
                 )}
               </div>
             </div>

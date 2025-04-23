@@ -110,7 +110,9 @@ function EditorContent() {
   const [eventTitle, setEventTitle] = useState<string>('');
   const [eventLocation, setEventLocation] = useState<string>('');
   const [eventAddress, setEventAddress] = useState<string>('');
-  const [eventDescription, setEventDescription] = useState<string>('');
+  const [eventDescription, setEventDescription] = useState<string>(`
+    <p>Enter details about your event here...</p>
+  `);
   const [eventDate, setEventDate] = useState<string>('');
   const [eventFlyerImage, setEventFlyerImage] = useState<string>('');
   const [currentEventId, setCurrentEventId] = useState<number | null>(null);
@@ -1456,14 +1458,17 @@ function EditorContent() {
               >
                 Description (optional)
               </label>
-              <textarea
-                id='eventDescription'
-                value={eventDescription}
-                onChange={e => setEventDescription(e.target.value)}
-                rows={4}
-                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
-                placeholder='Details about the event such as time, lineup, etc.'
-              />
+              <div className='border border-gray-300 rounded-md'>
+                <AdvancedTipTap
+                  content={eventDescription}
+                  onChange={html => setEventDescription(html)}
+                  placeholder='Details about the event such as time, lineup, etc. You can add links and images here.'
+                />
+              </div>
+              <p className='text-xs text-gray-500 mt-2'>
+                Use the rich text editor to add formatting, links, and images to
+                your event description.
+              </p>
             </div>
 
             <div className='mb-4'>
