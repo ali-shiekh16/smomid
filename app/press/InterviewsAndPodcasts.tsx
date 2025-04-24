@@ -2,24 +2,43 @@ import React from 'react';
 import Section from '../components/Section';
 import PodcastCard from './PodcastCard';
 import HeadingPill from '../components/HeadingPill';
-import data from './_pressData';
+import { PressItem } from './page';
 
-const InterviewsAndPodcasts = () => {
+// Use the PressItem type from our page component
+interface InterviewsAndPodcastsProps {
+  pressItems: PressItem[];
+}
+
+const InterviewsAndPodcasts = ({ pressItems }: InterviewsAndPodcastsProps) => {
+  // If there are no items, show a fallback message or return null
+  if (pressItems.length === 0) {
+    return (
+      <Section>
+        <div className='space-y-20'>
+          <HeadingPill align='center'>Interviews & Podcasts</HeadingPill>
+          <p className='text-center text-gray-400'>
+            No interviews or podcasts available at this time.
+          </p>
+        </div>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <div className='space-y-20'>
-        <HeadingPill align='center'>Press</HeadingPill>
+        <HeadingPill align='center'>Interviews & Podcasts</HeadingPill>
         <div className='md:grid md:grid-cols-3 md:gap-5'>
-          {data.map((podcast, index) => (
+          {pressItems.map(item => (
             <PodcastCard
-              key={index}
-              title={podcast.title}
-              subtitle={podcast.subtitle}
-              text={podcast.text}
-              image={podcast.image}
-              date={podcast.date}
-              btnText={podcast.btnText}
-              link={podcast.link}
+              key={item.id}
+              title={item.title}
+              subtitle={item.subtitle}
+              text={item.text || ''}
+              image={item.image}
+              date={item.date || ''}
+              btnText={item.btnText}
+              link={item.link || '#'}
             />
           ))}
         </div>

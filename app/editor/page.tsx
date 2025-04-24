@@ -39,6 +39,23 @@ interface Event {
   updatedAt: string;
 }
 
+// Interface for press item
+interface PressItem {
+  id: number;
+  title: string;
+  subtitle: string;
+  text: string | null;
+  image: string;
+  date: string | null;
+  btnText: string;
+  link: string | null;
+  itemType: string;
+  published: boolean;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Interface for email subscriber
 interface EmailSubscriber {
   id: number;
@@ -71,10 +88,19 @@ function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editSlug = searchParams.get('slug');
+  const editId = searchParams.get('id');
   const type = searchParams.get('type') || 'blog'; // Default to blog if not specified
   const [mode, setMode] = useState<'create' | 'edit' | 'manage'>('create');
-  const [editorType, setEditorType] = useState<'blog' | 'event' | 'admin'>(
-    type === 'event' ? 'event' : type === 'admin' ? 'admin' : 'blog'
+  const [editorType, setEditorType] = useState<
+    'blog' | 'event' | 'press' | 'admin'
+  >(
+    type === 'event'
+      ? 'event'
+      : type === 'press'
+      ? 'press'
+      : type === 'admin'
+      ? 'admin'
+      : 'blog'
   );
   const { isAuthenticated, logout, loading } = useAuth();
 
@@ -117,9 +143,20 @@ function EditorContent() {
   const [eventFlyerImage, setEventFlyerImage] = useState<string>('');
   const [currentEventId, setCurrentEventId] = useState<number | null>(null);
 
+  // Press item form state
+  const [pressTitle, setPressTitle] = useState<string>('');
+  const [pressSubtitle, setPressSubtitle] = useState<string>('');
+  const [pressImage, setPressImage] = useState<string>('');
+  const [pressDate, setPressDate] = useState<string>('');
+  const [pressBtnText, setPressBtnText] = useState<string>('Link');
+  const [pressLink, setPressLink] = useState<string>('');
+  const [pressItemType, setPressItemType] = useState<string>('podcast');
+  const [currentPressId, setCurrentPressId] = useState<number | null>(null);
+
   // Management state
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
+  const [pressItems, setPressItems] = useState<PressItem[]>([]);
   const [showDrafts, setShowDrafts] = useState<boolean>(true);
   const [showPublished, setShowPublished] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -130,29 +167,7 @@ function EditorContent() {
     type: 'success' | 'error' | '';
   }>({ message: '', type: '' });
 
-  // Fetch all items on initial load
-  useEffect(() => {
-    if (mode === 'manage') {
-      if (editorType === 'blog') {
-        fetchBlogPosts();
-      } else {
-        fetchEvents();
-      }
-    }
-  }, [mode, showDrafts, editorType]);
-
-  // Fetch a specific blog post to edit if slug is provided in URL
-  useEffect(() => {
-    if (editSlug) {
-      setMode('edit');
-      if (type === 'event') {
-        fetchEventBySlug(editSlug);
-      } else {
-        fetchBlogPostBySlug(editSlug);
-      }
-    }
-  }, [editSlug, type]);
-
+  // Fetch blog posts function
   const fetchBlogPosts = async () => {
     setIsLoading(true);
     try {
@@ -172,6 +187,19 @@ function EditorContent() {
       setIsLoading(false);
     }
   };
+
+  // Load data automatically when editorType changes and mode is 'manage'
+  useEffect(() => {
+    if (mode === 'manage') {
+      if (editorType === 'blog') {
+        fetchBlogPosts();
+      } else if (editorType === 'event') {
+        fetchEvents();
+      } else if (editorType === 'press') {
+        fetchPressItems();
+      }
+    }
+  }, [editorType, mode]);
 
   const fetchEvents = async () => {
     setIsLoading(true);
@@ -252,6 +280,57 @@ function EditorContent() {
       console.error('Error fetching event:', error);
       setSaveStatus({
         message: 'Error fetching event. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Press items functions
+  const fetchPressItems = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/press?drafts=true`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch press items');
+      }
+      const data = await response.json();
+      setPressItems(data.data);
+    } catch (error) {
+      console.error('Error fetching press items:', error);
+      setSaveStatus({
+        message: 'Error fetching press items. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchPressItemById = async (id: number) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/press?id=${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch press item');
+      }
+      const data = await response.json();
+      const pressItem = data.data;
+
+      // Populate the form with the press item data
+      setCurrentPressId(pressItem.id);
+      setPressTitle(pressItem.title || '');
+      setPressSubtitle(pressItem.subtitle || '');
+      setPressImage(pressItem.image || '');
+      setPressDate(pressItem.date || '');
+      setPressBtnText(pressItem.btnText || 'Link');
+      setPressLink(pressItem.link || '');
+      setPressItemType(pressItem.itemType || 'podcast');
+    } catch (error) {
+      console.error('Error fetching press item:', error);
+      setSaveStatus({
+        message: 'Error fetching press item. Please try again.',
         type: 'error',
       });
     } finally {
@@ -465,6 +544,102 @@ function EditorContent() {
     }
   };
 
+  const savePressItem = async (publish = false) => {
+    if (!pressTitle.trim()) {
+      setSaveStatus({
+        message: 'Please enter a title for your press item',
+        type: 'error',
+      });
+      return;
+    }
+
+    if (!pressSubtitle.trim()) {
+      setSaveStatus({
+        message: 'Please enter a subtitle for your press item',
+        type: 'error',
+      });
+      return;
+    }
+
+    if (!pressImage) {
+      setSaveStatus({
+        message: 'Please upload an image for your press item',
+        type: 'error',
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveStatus({ message: '', type: '' });
+
+    try {
+      const response = await fetch('/api/press', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: currentPressId, // Include ID if editing an existing press item
+          title: pressTitle,
+          subtitle: pressSubtitle,
+          text: null, // Set text to null since we're removing this field
+          image: pressImage,
+          date: pressDate || null,
+          btnText: pressBtnText || 'Link',
+          link: pressLink || '#',
+          itemType: pressItemType || 'podcast',
+          published: publish,
+          publishedAt: publish ? new Date().toISOString() : null,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save press item');
+      }
+
+      const data = await response.json();
+      setSaveStatus({
+        message: publish
+          ? 'Press item published successfully!'
+          : 'Press item saved as draft!',
+        type: 'success',
+      });
+
+      // Redirect to management view after a successful save
+      if (mode === 'edit') {
+        setTimeout(() => {
+          setMode('manage');
+          fetchPressItems();
+        }, 1500);
+      }
+
+      // Redirect to the press page after a successful publish from create mode
+      if (publish && mode === 'create') {
+        setTimeout(() => {
+          router.push('/press');
+        }, 1500);
+      }
+
+      // Reset form if we just created a new press item
+      if (mode === 'create') {
+        resetPressForm();
+      }
+    } catch (error) {
+      console.error('Error saving press item:', error);
+      setSaveStatus({
+        message: 'Error saving press item. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsSaving(false);
+
+      // Auto-hide the status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ message: '', type: '' });
+      }, 3000);
+    }
+  };
+
   const deleteBlogPost = async (id: number) => {
     if (
       !confirm(
@@ -551,10 +726,64 @@ function EditorContent() {
     }
   };
 
+  const deletePressItem = async (id: number) => {
+    if (
+      !confirm(
+        'Are you sure you want to delete this press item? This action cannot be undone.'
+      )
+    ) {
+      return;
+    }
+
+    setIsDeleting(true);
+
+    try {
+      const response = await fetch(`/api/press?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete press item');
+      }
+
+      setSaveStatus({
+        message: 'Press item deleted successfully!',
+        type: 'success',
+      });
+
+      // Refresh the list of press items
+      fetchPressItems();
+    } catch (error) {
+      console.error('Error deleting press item:', error);
+      setSaveStatus({
+        message: 'Error deleting press item. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsDeleting(false);
+
+      // Auto-hide the status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ message: '', type: '' });
+      }, 3000);
+    }
+  };
+
   const calculateReadTime = (html: string) => {
     const text = html.replace(/<[^>]*>/g, '');
     const words = text.split(/\s+/).length;
     return Math.ceil(words / 200); // 200 words per minute
+  };
+
+  const resetPressForm = () => {
+    setCurrentPressId(null);
+    setPressTitle('');
+    setPressSubtitle('');
+    setPressImage('');
+    setPressDate('');
+    setPressBtnText('Link');
+    setPressLink('');
+    setPressItemType('podcast');
   };
 
   // Filter items based on published status
@@ -565,6 +794,10 @@ function EditorContent() {
   const filteredEvents = events.filter(
     event =>
       (showDrafts && !event.published) || (showPublished && event.published)
+  );
+
+  const filteredPressItems = pressItems.filter(
+    item => (showDrafts && !item.published) || (showPublished && item.published)
   );
 
   // Fetch email list subscribers
@@ -700,6 +933,33 @@ function EditorContent() {
     }
   }, [editorType]);
 
+  // Fetch data for editing when queryParams are present
+  useEffect(() => {
+    if (!loading) {
+      if (editSlug && type === 'blog') {
+        fetchBlogPostBySlug(editSlug);
+        setMode('edit');
+      } else if (editSlug && type === 'event') {
+        fetchEventBySlug(editSlug);
+        setMode('edit');
+      } else if (editId && type === 'press') {
+        fetchPressItemById(parseInt(editId));
+        setMode('edit');
+      }
+
+      // Always load the management tables when in "manage" mode or when switching types
+      if (mode === 'manage') {
+        if (editorType === 'blog') {
+          fetchBlogPosts();
+        } else if (editorType === 'event') {
+          fetchEvents();
+        } else if (editorType === 'press') {
+          fetchPressItems();
+        }
+      }
+    }
+  }, [editSlug, editId, type, loading, editorType]);
+
   // Render a loading state while checking authentication
   if (loading) {
     return (
@@ -737,7 +997,7 @@ function EditorContent() {
             <button
               onClick={() => {
                 setEditorType('blog');
-                // Clear event form state when switching to blog
+                // Clear form state when switching to blog
                 if (mode === 'edit') {
                   setMode('create');
                   setCurrentEventId(null);
@@ -760,7 +1020,7 @@ function EditorContent() {
             <button
               onClick={() => {
                 setEditorType('event');
-                // Clear event form state when switching to events if in edit mode
+                // Clear form state when switching to events if in edit mode
                 if (mode === 'edit') {
                   setMode('create');
                   setCurrentEventId(null);
@@ -779,6 +1039,30 @@ function EditorContent() {
               }`}
             >
               Events
+            </button>
+            <button
+              onClick={() => {
+                setEditorType('press');
+                // Clear form state when switching to press if in edit mode
+                if (mode === 'edit') {
+                  setMode('create');
+                  setCurrentPressId(null);
+                  setPressTitle('');
+                  setPressSubtitle('');
+                  setPressImage('');
+                  setPressDate('');
+                  setPressBtnText('Link');
+                  setPressLink('');
+                  setPressItemType('podcast');
+                }
+              }}
+              className={`px-4 py-2 rounded-md ${
+                editorType === 'press'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Press
             </button>
             <button
               onClick={() => {
@@ -801,7 +1085,7 @@ function EditorContent() {
               <button
                 onClick={() => {
                   setMode('create');
-                  // Reset form state when creating a new event
+                  // Reset form state when creating a new item
                   if (editorType === 'event') {
                     setCurrentEventId(null);
                     setEventTitle('');
@@ -821,6 +1105,15 @@ function EditorContent() {
                     setFeaturedImage('');
                     setTags('');
                     setReadTime(5);
+                  } else if (editorType === 'press') {
+                    setCurrentPressId(null);
+                    setPressTitle('');
+                    setPressSubtitle('');
+                    setPressImage('');
+                    setPressDate('');
+                    setPressBtnText('Link');
+                    setPressLink('');
+                    setPressItemType('podcast');
                   }
                 }}
                 className={`px-4 py-2 rounded-md ${
@@ -829,15 +1122,21 @@ function EditorContent() {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                {editorType === 'blog' ? 'New Post' : 'New Event'}
+                {editorType === 'blog'
+                  ? 'New Post'
+                  : editorType === 'event'
+                  ? 'New Event'
+                  : 'New Press Item'}
               </button>
               <button
                 onClick={() => {
                   setMode('manage');
                   if (editorType === 'blog') {
                     fetchBlogPosts();
-                  } else {
+                  } else if (editorType === 'event') {
                     fetchEvents();
+                  } else if (editorType === 'press') {
+                    fetchPressItems();
                   }
                 }}
                 className={`px-4 py-2 rounded-md ${
@@ -846,7 +1145,12 @@ function EditorContent() {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                Manage {editorType === 'blog' ? 'Posts' : 'Events'}
+                Manage{' '}
+                {editorType === 'blog'
+                  ? 'Posts'
+                  : editorType === 'event'
+                  ? 'Events'
+                  : 'Press Items'}
               </button>
             </div>
           )}
@@ -1237,6 +1541,131 @@ function EditorContent() {
           </div>
         )}
 
+        {/* Press Item Management View */}
+        {mode === 'manage' && editorType === 'press' && (
+          <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+            <div className='flex justify-between items-center mb-4'>
+              <h2 className='text-xl font-semibold'>Your Press Items</h2>
+              <div className='flex space-x-4'>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={showDrafts}
+                    onChange={() => setShowDrafts(!showDrafts)}
+                    className='h-4 w-4 text-indigo-600'
+                  />
+                  <span className='ml-2 text-sm'>Show Drafts</span>
+                </label>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={showPublished}
+                    onChange={() => setShowPublished(!showPublished)}
+                    className='h-4 w-4 text-indigo-600'
+                  />
+                  <span className='ml-2 text-sm'>Show Published</span>
+                </label>
+              </div>
+            </div>
+
+            {isLoading ? (
+              <div className='text-center py-10'>
+                <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent'></div>
+                <p className='mt-3'>Loading press items...</p>
+              </div>
+            ) : filteredPressItems.length === 0 ? (
+              <div className='text-center py-10 text-gray-500'>
+                No press items found.
+              </div>
+            ) : (
+              <div className='overflow-x-auto'>
+                <table className='min-w-full divide-y divide-gray-200'>
+                  <thead className='bg-gray-50'>
+                    <tr>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Title
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Subtitle
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Date
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Status
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className='bg-white divide-y divide-gray-200'>
+                    {filteredPressItems.map(item => (
+                      <tr key={item.id}>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                          {item.title}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                          {item.subtitle}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                          {item.date
+                            ? new Date(item.date).toLocaleDateString()
+                            : 'No date set'}
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm'>
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              item.published
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}
+                          >
+                            {item.published ? 'Published' : 'Draft'}
+                          </span>
+                        </td>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+                          <div className='flex space-x-3'>
+                            <button
+                              onClick={() => {
+                                router.push(`/editor?id=${item.id}&type=press`);
+                              }}
+                              className='text-indigo-600 hover:text-indigo-900'
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => deletePressItem(item.id)}
+                              disabled={isDeleting}
+                              className='text-red-600 hover:text-red-900'
+                            >
+                              Delete
+                            </button>
+                            {!item.published && (
+                              <button
+                                onClick={() => {
+                                  fetchPressItemById(item.id);
+                                  setTimeout(() => {
+                                    setMode('edit');
+                                    savePressItem(true);
+                                  }, 500);
+                                }}
+                                className='text-green-600 hover:text-green-900'
+                              >
+                                Publish
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Blog Post Editor Form */}
         {(mode === 'create' || mode === 'edit') && editorType === 'blog' && (
           <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
@@ -1514,6 +1943,148 @@ function EditorContent() {
                   : mode === 'edit'
                   ? 'Update & Publish'
                   : 'Publish Event'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Press Item Editor Form */}
+        {(mode === 'create' || mode === 'edit') && editorType === 'press' && (
+          <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+            <div className='mb-4'>
+              <label
+                htmlFor='pressTitle'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Title
+              </label>
+              <input
+                type='text'
+                id='pressTitle'
+                value={pressTitle}
+                onChange={e => setPressTitle(e.target.value)}
+                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
+                placeholder='Enter a title for the press item'
+              />
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='pressSubtitle'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Subtitle/Description
+              </label>
+              <textarea
+                id='pressSubtitle'
+                value={pressSubtitle}
+                onChange={e => setPressSubtitle(e.target.value)}
+                rows={2}
+                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
+                placeholder='Enter a description or subtitle for the press item'
+              />
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='pressDate'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Date
+              </label>
+              <input
+                type='date'
+                id='pressDate'
+                value={pressDate}
+                onChange={e => setPressDate(e.target.value)}
+                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black'
+              />
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='pressImage'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Image
+              </label>
+              <CloudinaryUploader
+                currentImage={pressImage}
+                onImageUploaded={url => setPressImage(url)}
+              />
+              <p className='text-xs text-gray-500 mt-2'>
+                Upload an image for the press item (podcast image, article
+                image, etc.)
+              </p>
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='pressItemType'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Item Type
+              </label>
+              <select
+                id='pressItemType'
+                value={pressItemType}
+                onChange={e => setPressItemType(e.target.value)}
+                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black'
+              >
+                <option value='podcast'>Podcast</option>
+                <option value='article'>Article</option>
+                <option value='feature'>Feature</option>
+                <option value='interview'>Interview</option>
+                <option value='review'>Review</option>
+                <option value='other'>Other</option>
+              </select>
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='pressLink'
+                className='block text-sm font-medium text-gray-700 mb-1'
+              >
+                Link URL
+              </label>
+              <input
+                type='text'
+                id='pressLink'
+                value={pressLink}
+                onChange={e => setPressLink(e.target.value)}
+                className='border border-gray-400 py-2 px-4 rounded-md block w-full focus:border-gray-500 text-black placeholder:text-gray-400'
+                placeholder='https://example.com/press-item'
+              />
+            </div>
+
+            <div className='flex justify-end space-x-3 mt-6'>
+              <button
+                onClick={() => setMode('manage')}
+                className='inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => savePressItem(false)}
+                disabled={isSaving}
+                className='inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
+              >
+                {isSaving
+                  ? 'Saving...'
+                  : mode === 'edit'
+                  ? 'Update Draft'
+                  : 'Save as Draft'}
+              </button>
+              <button
+                onClick={() => savePressItem(true)}
+                disabled={isSaving}
+                className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
+              >
+                {isSaving
+                  ? 'Publishing...'
+                  : mode === 'edit'
+                  ? 'Update & Publish'
+                  : 'Publish Item'}
               </button>
             </div>
           </div>

@@ -59,6 +59,24 @@ export const eventsTable = pgTable('events', {
   authorId: integer().references(() => usersTable.id),
 });
 
+// Press items table
+export const pressItemsTable = pgTable('press_items', {
+  id: serial('id').primaryKey(),
+  title: varchar({ length: 255 }).notNull(),
+  subtitle: varchar({ length: 255 }).notNull(),
+  text: text(),
+  image: varchar({ length: 255 }).notNull(),
+  date: varchar({ length: 50 }),
+  btnText: varchar({ length: 100 }).default('Link').notNull(),
+  link: varchar({ length: 255 }),
+  itemType: varchar({ length: 50 }).default('podcast').notNull(), // 'podcast', 'article', 'feature', etc.
+  published: boolean().default(false).notNull(),
+  publishedAt: timestamp(),
+  createdAt: timestamp().defaultNow().notNull(),
+  updatedAt: timestamp().defaultNow().notNull(),
+  authorId: integer().references(() => usersTable.id),
+});
+
 // Form submissions table
 export const formSubmissionsTable = pgTable('form_submissions', {
   id: serial('id').primaryKey(),
