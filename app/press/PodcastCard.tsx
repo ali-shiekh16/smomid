@@ -28,13 +28,13 @@ const PodcastCard = ({
         {title}
       </h2>
       <div className='px-5 md:px-15 py-10 '>
-        <Image
+        <img
           className='object-cover aspect-square mb-5  w-full'
           src={image}
           alt='Nick Podcast'
           width='500'
           height='500'
-          objectFit='cover'
+          // objectFit='cover'
         />
         {/* <div className='smd:h-80 smd:min-w-[400px]'></div> */}
         <div className='flex flex-col  items-center text-center'>
