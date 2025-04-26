@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: 'SMOMID',
   description:
     'Smomid (String Modeling Midi Device) is a unique, custom-built electronic instrument created by musician Nick Demopoulos.',
+  icons: {
+    icon: '/images/logo.png',
+    apple: '/images/logo.png',
+  },
 };
 
 export default function RootLayout({

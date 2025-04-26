@@ -26,6 +26,7 @@ async function getPressItems() {
   try {
     // Get the host from headers to construct absolute URL
     const headersList = headers();
+    // @ts-ignore
     const host = headersList.get('host') || 'localhost:3000';
     const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
 
