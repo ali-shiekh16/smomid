@@ -92,8 +92,8 @@ const SectionNick = () => {
 
       <div ref={textContentRef}>
         <div className='h-screen flex flex-col justify-center'>
-          <FancyHeading className='py-8 uppercase'>
-            NICK DEMOPOULOS
+          <FancyHeading className='py-8 uppercase '>
+            <span className='text-5xl md:text-7xl'>NICK DEMOPOULOS</span>
           </FancyHeading>
           <Text>
             Nick Demopoulos is a visionary musician, composer, and inventor of

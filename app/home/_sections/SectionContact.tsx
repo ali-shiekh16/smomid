@@ -44,7 +44,7 @@ const SectionContact = () => {
   );
 
   return (
-    <Section className='h-screen'>
+    <Section className='md:h-screen'>
       <div
         ref={container}
         className='md:flex h-full md:items-center md:justify-between md:space-x-10 space-y-10 md:space-y-0'
@@ -71,20 +71,6 @@ const SectionContact = () => {
 
         <div className='md:mr-28'>
           <ul className='space-y-10'>
-            {/* <li>
-              <Item
-                icon={<MapPinIcon size={35} className='text-white' />}
-                title='Location'
-                text='Istanbul, Turkey'
-              />
-            </li>
-            <li>
-              <Item
-                icon={<PhoneIcon size={35} className='text-white' />}
-                title='Phone'
-                text='+90 555 555 55 55'
-              />
-            </li> */}
             <li>
               <Item
                 icon={<MailIcon size={35} className='text-white' />}

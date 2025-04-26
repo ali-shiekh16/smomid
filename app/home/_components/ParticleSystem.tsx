@@ -1,4 +1,11 @@
-import React, { useRef, useMemo, forwardRef, useEffect, JSX } from 'react';
+import React, {
+  useRef,
+  useMemo,
+  forwardRef,
+  useEffect,
+  JSX,
+  useState,
+} from 'react';
 import * as THREE from 'three';
 import { useLoader, useThree } from '@react-three/fiber';
 import particleVertexShader from '../_shaders/Vertex';
@@ -16,6 +23,7 @@ interface Props extends MeshProps {
 
 const ParticleSystem = forwardRef<THREE.Points, Props>(
   ({ texturePath, onInit, step = 5, particleSize = 1, ...props }, ref) => {
+    const [isMobile, setIsMobile] = useState(false);
     const texture = useLoader(THREE.TextureLoader, texturePath);
     const materialRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -59,10 +67,14 @@ const ParticleSystem = forwardRef<THREE.Points, Props>(
           size.height
         );
       }
+
+      if (size.width < 768) setIsMobile(true);
     }, [size]);
 
+    const x = isMobile ? 1 : 0;
+
     return (
-      <points ref={ref} position={[0, 0, -20]} {...props}>
+      <points ref={ref} position={[x, 0, -20]} {...props}>
         <bufferGeometry>
           <bufferAttribute
             attach='attributes-position'
