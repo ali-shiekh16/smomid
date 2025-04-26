@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { pressItemsTable } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 // GET handler - get all press items or a specific one
 export async function GET(req: NextRequest) {
@@ -37,8 +37,11 @@ export async function GET(req: NextRequest) {
       query = query.where(eq(pressItemsTable.published, true));
     }
 
-    // Order by createdAt desc (newest first)
-    query = query.orderBy(pressItemsTable.createdAt);
+    // Order by date DESC (newest first), then by createdAt DESC as fallback for items without dates
+    query = query.orderBy(
+      desc(pressItemsTable.date),
+      desc(pressItemsTable.createdAt)
+    );
 
     const pressItems = await query;
 

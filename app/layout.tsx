@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { AuthProvider } from './context/AuthContext';
 
 export const metadata: Metadata = {
-  title: 'SMMOID',
+  title: 'SMOMID',
   description:
     'Smomid (String Modeling Midi Device) is a unique, custom-built electronic instrument created by musician Nick Demopoulos.',
 };

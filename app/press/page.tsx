@@ -2,8 +2,7 @@ import React from 'react';
 import InterviewsAndPodcasts from './InterviewsAndPodcasts';
 import Articles from './Articles';
 import FeaturesAndRecognitions from './FeaturesAndRecognitions';
-import { db, pressItemsTable } from '../../db';
-import { desc, eq } from 'drizzle-orm';
+import { headers } from 'next/headers';
 
 // Define the PressItem type to match your database schema
 export interface PressItem {
@@ -22,17 +21,26 @@ export interface PressItem {
   updatedAt: Date;
 }
 
-// Fetch press items from the database
+// Fetch press items from the API
 async function getPressItems() {
   try {
-    // Only fetch published items and sort by date (newest first)
-    const items = await db
-      .select()
-      .from(pressItemsTable)
-      .where(eq(pressItemsTable.published, true))
-      .orderBy(desc(pressItemsTable.date));
+    // Get the host from headers to construct absolute URL
+    const headersList = headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
 
-    return items;
+    // Use absolute URL to ensure API request works in server components
+    const res = await fetch(`${protocol}://${host}/api/press`, {
+      cache: 'no-store', // Disable cache to always get fresh data
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch press items: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log('Press items fetched:', data.data?.length || 0); // Log for debugging
+    return data.data || [];
   } catch (error) {
     console.error('Failed to fetch press items:', error);
     return [];
@@ -53,6 +61,7 @@ export default async function Press() {
     item =>
       item.itemType === 'feature' ||
       item.itemType === 'recognition' ||
+      item.itemType === 'review' ||
       item.itemType === 'other'
   );
 

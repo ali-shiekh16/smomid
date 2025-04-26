@@ -28,13 +28,15 @@ const ArticleCard = ({
       <div className='space-y-10'>
         <h2 className='font-neo-latina text-3xl leading-none'>{title}</h2>
         {date && <p className='text-sm text-gray-400'>{date}</p>}
-        <Image
-          className='object-cover h-96'
-          src={image}
-          alt={title}
-          width='400'
-          height='400'
-        />
+        <div className='aspect-video relative rounded-lg overflow-hidden'>
+          <img
+            className='object-cover h-96 w-full'
+            src={image}
+            alt={title}
+            width='400'
+            height='400'
+          />
+        </div>
         <p>{text}</p>
         <Link href={link} target='_blank' rel='noopener noreferrer'>
           <ButtonOutline className='bg-white'>
