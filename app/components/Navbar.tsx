@@ -38,7 +38,7 @@ const NavIcon = ({ href, icon }: { href: string; icon: string }) => {
 
 const Navbar = () => {
   return (
-    <nav className='flex space-y-5 md:space-y-0 flex-col md:flex-row items-center md:justify-between sticky bottom-0  py-8 text-md md:text-lg  px-10 md:px-32 bg-black/20 z-30'>
+    <nav className='flex space-y-5 md:space-y-0 flex-col md:flex-row items-center md:justify-between sticky bottom-0  py-8 text-md md:text-lg  px-10 md:px-32  z-30'>
       <ul className='flex justify-center md:justify-start flex-wrap space-x-3 md:space-x-5'>
         <NavLink href='/'>Home</NavLink>
         <NavLink href='/about'>About</NavLink>
