@@ -10,7 +10,7 @@ const ShirtsGrid = () => {
       <HeadingUnderlined className='uppercase text-center md:text-right'>
         Clothes
       </HeadingUnderlined>
-      <div className='flex flex-col my-20  w-full mx-auto'>
+      <div className='flex flex-col px-5 my-20  w-full mx-auto'>
         <p className='text-2xl mb-2'>S,M,L,XL,XXL</p>
         <Link href='https://smomid.bandcamp.com/merch/smomid-ssri-crew-shirt-limited-edition'>
           <div className='md:flex md:flex-wrap lg:flex-nowrap  border-1 border-white p-5 space-x-10 space-y-5 lg:space-y-0 cursor-pointer '>

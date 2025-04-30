@@ -42,40 +42,19 @@ const Albums = () => {
   return (
     <Section>
       <HeadingUnderlined className='uppercase'>Albums</HeadingUnderlined>
-      <div className='flex flex-wrap justify-center space-x-8 space-y-15 my-20'>
+      <div className='md:flex md:flex-wrap md:justify-center md:space-x-8 space-y-20 my-20'>
         {data.map(album => (
-          <Link href={album.link} key={album.link}>
-            <ProductCard
-              title={album.title}
-              price={album.price}
-              image={album.image}
-            />
-          </Link>
+          <div>
+            <Link href={album.link} key={album.link}>
+              <ProductCard
+                title={album.title}
+                price={album.price}
+                image={album.image}
+              />
+            </Link>
+          </div>
         ))}
       </div>
-
-      {/* <div className='flex justify-center mt-28'>
-        <ButtonOutline className='w-fit rounded-none px-6 py-3 bg-black/15'>
-          <span className='text-2xl'>Show More</span>
-        </ButtonOutline>
-      </div> */}
-      {/* <Image
-        className='w-full object-cover my-20 '
-        src='/images/merchandise-albums.png'
-        width='1920'
-        height='1080'
-        alt='Albums Marquee'
-        objectFit='contain'
-      />
-
-      <Image
-        className='w-full mt-10'
-        src='/icons/line.svg'
-        width='1920'
-        height='10'
-        alt='Line'
-        objectFit='cover'
-      /> */}
     </Section>
   );
 };

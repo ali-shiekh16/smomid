@@ -13,7 +13,7 @@ const ProductCard = ({ image, title, price, className, ...props }: Props) => {
     <div className={clsx('uppercase text-2xl max-w-80', className)} {...props}>
       <div className='border-2 border-white w-full'>
         <Image
-          className='object-contain w-full h-full '
+          className='object-contain w-full h-full'
           src={image}
           alt='Shirts'
           width={500}
