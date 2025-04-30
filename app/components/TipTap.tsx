@@ -99,6 +99,17 @@ const TipTap: React.FC<TipTapProps> = ({
     },
   });
 
+  // Add this effect to update editor content when the content prop changes
+  useEffect(() => {
+    if (editor && content) {
+      // Only update if the content differs from current editor content
+      const currentContent = editor.getHTML();
+      if (currentContent !== content) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [editor, content]);
+
   // Add a global click handler as a fallback approach
   useEffect(() => {
     const handleDocumentClick = (e: MouseEvent) => {
