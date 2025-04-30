@@ -51,26 +51,5 @@ async function getPressItems() {
 export default async function Press() {
   const pressItems = await getPressItems();
 
-  // Group items by type for different sections
-  const podcasts = pressItems.filter(
-    item => item.itemType === 'podcast' || item.itemType === 'interview'
-  );
-
-  const articles = pressItems.filter(item => item.itemType === 'article');
-
-  const features = pressItems.filter(
-    item =>
-      item.itemType === 'feature' ||
-      item.itemType === 'recognition' ||
-      item.itemType === 'review' ||
-      item.itemType === 'other'
-  );
-
-  return (
-    <>
-      <InterviewsAndPodcasts pressItems={podcasts} />
-      {articles.length > 0 && <Articles pressItems={articles} />}
-      {features.length > 0 && <FeaturesAndRecognitions pressItems={features} />}
-    </>
-  );
+  return <InterviewsAndPodcasts pressItems={pressItems} />;
 }

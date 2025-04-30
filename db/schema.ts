@@ -75,6 +75,7 @@ export const pressItemsTable = pgTable('press_items', {
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().defaultNow().notNull(),
   authorId: integer().references(() => usersTable.id),
+  order: integer().default(0).notNull(), // For sorting items
 });
 
 // Form submissions table

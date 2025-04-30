@@ -37,8 +37,9 @@ export async function GET(req: NextRequest) {
       query = query.where(eq(pressItemsTable.published, true));
     }
 
-    // Order by date DESC (newest first), then by createdAt DESC as fallback for items without dates
+    // Order by order field first, then by date DESC and createdAt DESC as fallbacks
     query = query.orderBy(
+      pressItemsTable.order,
       desc(pressItemsTable.date),
       desc(pressItemsTable.createdAt)
     );
@@ -74,6 +75,7 @@ export async function POST(req: NextRequest) {
       published,
       publishedAt,
       authorId,
+      order,
     } = body;
 
     // Validate required fields
@@ -101,6 +103,7 @@ export async function POST(req: NextRequest) {
           published: published || false,
           publishedAt: publishedAt ? new Date(publishedAt) : null,
           updatedAt: new Date(),
+          order: order !== undefined ? order : 0,
         })
         .where(eq(pressItemsTable.id, id))
         .returning();
@@ -118,6 +121,18 @@ export async function POST(req: NextRequest) {
       });
     } else {
       // It's a new item
+      // Get the highest order value to place new items at the end
+      const highestOrderItem = await db
+        .select({ maxOrder: pressItemsTable.order })
+        .from(pressItemsTable)
+        .orderBy(desc(pressItemsTable.order))
+        .limit(1);
+
+      const nextOrder =
+        highestOrderItem.length > 0
+          ? (highestOrderItem[0].maxOrder || 0) + 1
+          : 0;
+
       const result = await db
         .insert(pressItemsTable)
         .values({
@@ -134,6 +149,7 @@ export async function POST(req: NextRequest) {
           createdAt: new Date(),
           updatedAt: new Date(),
           authorId: authorId || null,
+          order: nextOrder,
         })
         .returning();
 
@@ -188,6 +204,56 @@ export async function DELETE(req: NextRequest) {
     console.error('Error deleting press item:', error);
     return NextResponse.json(
       { error: 'Failed to delete press item' },
+      { status: 500 }
+    );
+  }
+}
+
+// PATCH handler - update the order of multiple press items
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { items } = body;
+
+    if (!items || !Array.isArray(items)) {
+      return NextResponse.json(
+        { error: 'Items array is required' },
+        { status: 400 }
+      );
+    }
+
+    // Update each item's order in a transaction
+    const result = await db.transaction(async tx => {
+      const updates = [];
+
+      for (const item of items) {
+        if (!item.id || typeof item.order !== 'number') {
+          throw new Error('Each item must have id and order properties');
+        }
+
+        const update = await tx
+          .update(pressItemsTable)
+          .set({
+            order: item.order,
+            updatedAt: new Date(),
+          })
+          .where(eq(pressItemsTable.id, item.id))
+          .returning({ id: pressItemsTable.id, order: pressItemsTable.order });
+
+        updates.push(update[0]);
+      }
+
+      return updates;
+    });
+
+    return NextResponse.json({
+      message: 'Press items order updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    console.error('Error updating press items order:', error);
+    return NextResponse.json(
+      { error: 'Failed to update press items order' },
       { status: 500 }
     );
   }

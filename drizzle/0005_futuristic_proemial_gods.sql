@@ -1,0 +1,1 @@
+ALTER TABLE "press_items" ADD COLUMN "order" integer;

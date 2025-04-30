@@ -6,6 +6,7 @@ import AdvancedTipTap from '../components/AdvancedTipTap';
 import CloudinaryUploader from '../components/CloudinaryUploader';
 import slugify from 'slugify';
 import { useAuth } from '../context/AuthContext';
+import SortablePressItems from '../components/SortablePressItems';
 
 // Interface for blog post type
 interface BlogPost {
@@ -960,6 +961,49 @@ function EditorContent() {
     }
   }, [editSlug, editId, type, loading, editorType]);
 
+  const handleReorderPressItems = async reorderedItems => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/press', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: reorderedItems.map(item => ({
+            id: item.id,
+            order: item.order,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update press items order');
+      }
+
+      setSaveStatus({
+        message: 'Press items order updated successfully!',
+        type: 'success',
+      });
+
+      // Refresh the list
+      fetchPressItems();
+    } catch (error) {
+      console.error('Error updating press items order:', error);
+      setSaveStatus({
+        message: 'Error updating press items order. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+
+      // Auto-hide the status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ message: '', type: '' });
+      }, 3000);
+    }
+  };
+
   // Render a loading state while checking authentication
   if (loading) {
     return (
@@ -1129,44 +1173,18 @@ function EditorContent() {
                   : 'New Press Item'}
               </button>
               <button
-                onClick={() => {
-                  setMode('manage');
-                  if (editorType === 'blog') {
-                    fetchBlogPosts();
-                  } else if (editorType === 'event') {
-                    fetchEvents();
-                  } else if (editorType === 'press') {
-                    fetchPressItems();
-                  }
-                }}
+                onClick={() => setMode('manage')}
                 className={`px-4 py-2 rounded-md ${
                   mode === 'manage'
                     ? 'bg-indigo-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                Manage{' '}
-                {editorType === 'blog'
-                  ? 'Posts'
-                  : editorType === 'event'
-                  ? 'Events'
-                  : 'Press Items'}
+                Manage
               </button>
             </div>
           )}
         </div>
-
-        {saveStatus.message && (
-          <div
-            className={`mb-4 p-4 rounded-md ${
-              saveStatus.type === 'success'
-                ? 'bg-green-100 text-green-800'
-                : 'bg-red-100 text-red-800'
-            }`}
-          >
-            {saveStatus.message}
-          </div>
-        )}
 
         {/* Admin Panel - Email List Subscribers */}
         {editorType === 'admin' && (
@@ -1229,11 +1247,11 @@ function EditorContent() {
             </div>
 
             {/* Inquiries Section */}
-
-            <div className='flex justify-between items-center mb-4'>
-              <h3 className='text-2xl font-semibold'>Inquiries</h3>
-            </div>
             <div className='bg-white rounded-lg shadow-md overflow-hidden p-6 mb-6'>
+              <div className='flex justify-between items-center mb-4'>
+                <h3 className='text-xl font-semibold'>Inquiries</h3>
+              </div>
+
               {isLoadingInquiries ? (
                 <div className='text-center py-10'>
                   <div className='inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent'></div>
@@ -1579,88 +1597,21 @@ function EditorContent() {
               </div>
             ) : (
               <div className='overflow-x-auto'>
-                <table className='min-w-full divide-y divide-gray-200'>
-                  <thead className='bg-gray-50'>
-                    <tr>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Title
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Subtitle
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Date
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Status
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className='bg-white divide-y divide-gray-200'>
-                    {filteredPressItems.map(item => (
-                      <tr key={item.id}>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                          {item.title}
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                          {item.subtitle}
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                          {item.date
-                            ? new Date(item.date).toLocaleDateString()
-                            : 'No date set'}
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm'>
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              item.published
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}
-                          >
-                            {item.published ? 'Published' : 'Draft'}
-                          </span>
-                        </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                          <div className='flex space-x-3'>
-                            <button
-                              onClick={() => {
-                                router.push(`/editor?id=${item.id}&type=press`);
-                              }}
-                              className='text-indigo-600 hover:text-indigo-900'
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => deletePressItem(item.id)}
-                              disabled={isDeleting}
-                              className='text-red-600 hover:text-red-900'
-                            >
-                              Delete
-                            </button>
-                            {!item.published && (
-                              <button
-                                onClick={() => {
-                                  fetchPressItemById(item.id);
-                                  setTimeout(() => {
-                                    setMode('edit');
-                                    savePressItem(true);
-                                  }, 500);
-                                }}
-                                className='text-green-600 hover:text-green-900'
-                              >
-                                Publish
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <SortablePressItems
+                  items={filteredPressItems}
+                  onOrderChange={handleReorderPressItems}
+                  onEdit={id => {
+                    router.push(`/editor?id=${id}&type=press`);
+                  }}
+                  onDelete={id => deletePressItem(id)}
+                  onPublish={id => {
+                    fetchPressItemById(id);
+                    setTimeout(() => {
+                      setMode('edit');
+                      savePressItem(true);
+                    }, 500);
+                  }}
+                />
               </div>
             )}
           </div>
@@ -2018,7 +1969,7 @@ function EditorContent() {
               </p>
             </div>
 
-            <div className='mb-4'>
+            <div className='mb-4 hidden'>
               <label
                 htmlFor='pressItemType'
                 className='block text-sm font-medium text-gray-700 mb-1'
