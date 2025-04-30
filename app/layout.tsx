@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`relative bg-gradient-to-t min-h-screen from-primary to-secondary text-white flex flex-col antialiased`}
+        className={`relative bg-gradient-to-t min-h-screen from-primary to-secondary text-white flex flex-col antialiased overflow-x-hidden`}
       >
         <AuthProvider>
           <Link href='/'>
